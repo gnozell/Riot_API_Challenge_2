@@ -5,6 +5,8 @@ import json
 import time
 sys.path.insert(0, '../lib/riotwatcher')
 from riotwatcher import RiotWatcher
+from riotwatcher import LoLException
+from riotwatcher import error_429
 
 
 
@@ -12,6 +14,10 @@ def get_file(file):
 	## opens a file called api.key which contains my api key
 	keyfile = open(file,"r")
 	return keyfile.read()
+
+def wait(rw):
+    while not rw.can_make_request():
+        time.sleep(1)
 
 def main():
 	## gets key from file
@@ -37,25 +43,35 @@ def main():
 			match_len = len(match_list)
 			print_file.write("[")
 			for matchID in match_list:
+
+				match_info = {}
+
 				try:
-
-					while not rw.can_make_request():
-						time.sleep(1)
-
+					wait(rw)
 					match_info = rw.get_match(matchID)
-					
-					print_file.write(str(json.dumps(match_info)))
-
-					if count != match_len:
-						print_file.write(",\n")
-
-					print "%s/%s"%(count, match_len)
-
+				except LoLException as e:
+					if e.error == error_429.error:
+						print "sleeping for 60 seconds got 429 error"
+						time.sleep(60)
+						wait(rw)
+						print "trying agian now"
+						match_info = rw.get_match(matchID)
+						print "just ran"
+					else:
+						print "other LoLException %s"%(e.error)
+						break
 				except Exception as e:
+					print str(e)
+					break	
 
-					print "error @ %s/%s"%(count, match_len)
-					print (e)
-					break
+				print_file.write(str(json.dumps(match_info)))
+
+				if count != match_len:
+					print_file.write(",\n")
+
+				print "%s/%s"%(count, match_len)
+
+				
 				count += 1
 			print_file.write("]")
 
