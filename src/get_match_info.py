@@ -18,7 +18,7 @@ def get_file(file):
 def wait(rw):
     while not rw.can_make_request():
         time.sleep(1)
-
+	
 def main():
 	## gets key from file
 	api_key = get_file("api.key")
@@ -42,7 +42,7 @@ def main():
 			count = 1
 			match_len = len(match_list)
 			print_file.write("[")
-			for matchID in match_list:
+			for matchID in match_list[7098:]:
 
 				match_info = {}
 
@@ -50,13 +50,13 @@ def main():
 					wait(rw)
 					match_info = rw.get_match(matchID)
 				except LoLException as e:
-					if e.error == error_429.error:
-						print "sleeping for 60 seconds got 429 error"
-						time.sleep(60)
-						wait(rw)
-						print "trying agian now"
-						match_info = rw.get_match(matchID)
-						print "just ran"
+					if e.error == error_429:
+						for header in e.response.headers:
+							print "headers: %s"%(header)
+						for cookie in e.response.cookies:
+							print "cookie: %s"%(cookie)
+						print "keys: %s"%(vars(e.response).keys())
+						break
 					else:
 						print "other LoLException %s"%(e.error)
 						break
