@@ -44,6 +44,9 @@ def main():
 	# gets key from file
 	api_key = get_file("api.key")
 
+	## init RiotWatcher
+	rw = RiotWatcher(api_key)
+
 	# location of the matchIDs if you want AP_ITEM_DATASET change to
 	# the appropriate directory
 	dir_location = "../info/BILGEWATER_DATASET/BILGEWATER"
@@ -55,8 +58,7 @@ def main():
 		# expecting a list of MatchIDs and then preform API calls to get the match info
 		# and then write to a file with ending "_info.json"
 		if "_info.json" not in file:
-			## init RiotWatcher
-			rw = RiotWatcher(api_key,default_region=file.replace(".json","").lower())
+			
 
 			new_file_name = file.replace(".json","_info.json")
 
@@ -93,7 +95,7 @@ def main():
 						wait(rw)
 
 						# attempts to get the match information given MatchID
-						match_info = rw.get_match(matchID)
+						match_info = rw.get_match(matchID, region=file.replace(".json","").lower(), include_timeline=True)
 
 						# if it got this far it successful and gotitbool is set to True
 						gotitbool = True
