@@ -17,7 +17,7 @@ def get_file(file):
 
 def wait(rw):
     while not rw.can_make_request():
-        time.sleep(1)
+        time.sleep(2)
 	
 def main():
 	## gets key from file
@@ -50,16 +50,17 @@ def main():
 					wait(rw)
 					match_info = rw.get_match(matchID)
 				except LoLException as e:
-					if e.error == error_429:
-						for header in e.response.headers:
-							print "headers: %s"%(header)
-						for cookie in e.response.cookies:
-							print "cookie: %s"%(cookie)
-						print "keys: %s"%(vars(e.response).keys())
+					print e.error
+					for header in e.response.headers:
+						print "headers: %s"%(header)
+					time.sleep(600)
+					wait(rw)
+					try:
+						match_info = rw.get_match(matchID)
+					except Exception as ee:
+						print "broke twice %s"%(ee)
 						break
-					else:
-						print "other LoLException %s"%(e.error)
-						break
+						
 				except Exception as e:
 					print str(e)
 					break	
