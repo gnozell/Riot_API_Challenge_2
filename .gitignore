@@ -1,3 +1,4 @@
 *.pyc
 src/api.key
 *_info.json
+not_used/*
