@@ -4,29 +4,38 @@ import os
 app = Flask(__name__, static_folder='static/', static_url_path='')
 
 @app.route("/")
-@app.route("/index.html")
-def homepage():
-    return render_template('index.html')
+def index_page():
+    stats = {}
+    return render_template('index.html', stats=stats)
 
-@app.route("/about.html")
+@app.route("/about")
 def about_page():
     return render_template('about.html')
 
-@app.route("/black_market.html")
+@app.route("/black_market")
 def black_market_page():
-    return render_template('black_market.html')
+    stats = {}
+    return render_template('black_market.html', stats=stats)
 
-@app.route("/brawlers.html")
+@app.route("/brawlers")
 def brawlers_page():
-    return render_template('brawlers.html')
+    stats = {}
+    return render_template('brawlers.html', stats=stats)
 
-@app.route("/champion.html")
-def champion_page():
-    return render_template('champion.html')
-
-@app.route("/champion_info.html")
+@app.route("/champion_info")
 def champion_info_page():
-    return render_template('champion_info.html')
+    champion_list = []
+    stats = {}
+    return render_template('champion_info.html', stats=stats, champion_list=champion_list)
+
+@app.route("/champion/<champion>")
+def champion_page(champion=None):
+    if str(champion) in ["Aatrox","Ahri"]:
+      stats = {"pickrate" : 49, "winrate": 49, "kills":1, "deaths":2, "assists":1 ,"kda":3, "primaryroll":"Top"}
+      items = ['1001','1001','1001','1001','1001','1001','1001','1001','1001']
+      return render_template('champion.html', champion=champion, items=items, stats=stats)
+    else:
+      return render_template('404.html'), 404
 
 @app.errorhandler(404)
 def page_not_found(e):
