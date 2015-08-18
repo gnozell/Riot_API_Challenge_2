@@ -51,7 +51,6 @@ def main():
 	# the appropriate directory
 	dir_location = "../info/BILGEWATER_DATASET/BILGEWATER"
 	files_dir = os.listdir(dir_location)
-	#files_dir = ["BR.json"]
 
 	for file in files_dir:
 		# For every file that doesn't end in _info.json loop through it
