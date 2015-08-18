@@ -28,7 +28,7 @@ def brawlers_page():
     stats = {}
     return render_template('brawlers.html', stats=stats)
 
-@app.route("/champion_info")
+@app.route("/champion")
 def champion_info_page():
     stats = {}
     return render_template('champion_info.html', stats=stats, champion_list=champion_list)
