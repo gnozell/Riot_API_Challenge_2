@@ -4,7 +4,7 @@ import os
 
 info = static_lol()
 champion_list = info.get_champion_list()
-champion_dict = info.get_champion_dict()
+champ_names = info.get_champion_names()
 black_market_list = info.get_black_market_items()
 
 app = Flask(__name__, static_folder='static/', static_url_path='')
@@ -35,8 +35,8 @@ def champion_info_page():
 
 @app.route("/champion/<champion>")
 def champion_page(champion=None):
-    if str(champion) in champion_list:
-      stats = {"pickrate" : 49, "winrate": 49, "kills":1, "deaths":2, "assists":1 ,"kda":3, "primaryroll":"Top"}
+    if str(champion) in champ_names:
+      stats = info.get_specific_champ(champion)[0]
       items = ['1001','1001','1001','1001','1001','1001','1001','1001','1001']
       return render_template('champion.html', champion=champion, items=items, stats=stats)
     else:
