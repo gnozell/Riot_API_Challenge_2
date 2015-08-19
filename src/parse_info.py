@@ -61,15 +61,25 @@ def print_champion_info(rw):
 
 	
 	champions = {}
-	champion_template = {"name":"", "":"", "":"", "":"", "":"", 
-							"":"","":"","":"","":"","":"",
-							"":"","":"","":"","":"","":"",
-							"":"","":"","":"","":"","":"",
-							"":"","":"","":"","":"","":"",
-							"":"","":""}
 	for file in files_dir:
 		if "_info.json" in file:
-			with open(dir_location + "/" + file) as data_file:    
+			with open(dir_location + "/" + file, 'r') as data_file:
+				count = 0;
+				for line in data_file:
+					clean_line = ""
+					if count == 0:
+						clean_line = line[1:len(line)-2]
+					elif count == 9999:
+						clean_line = line[:len(line)-1]
+					else:
+						clean_line = line[:len(line)-2]
+					count += 1
+					
+					print file + ": " + str(count)
+					data = json.loads(clean_line)
+	
+			
+			'''
 				data = json.load(data_file)
 				for match in data:
 					for participant in match['participants']:
@@ -78,6 +88,7 @@ def print_champion_info(rw):
 							champions[champion] += 1
 						else:
 							champions[champion] = 1
+			'''
 	
 	
 	for champion in champ_list['data']:
@@ -134,11 +145,11 @@ def main():
 	## init RiotWatcher
 	rw = RiotWatcher(api_key)
 	#print static_get_champion_list(rw)
-	#print_champion_info(rw)
+	print_champion_info(rw)
 	#print_items_info(rw)
-	drop_db()
-	insert_db()
-	read_db()
+	#drop_db()
+	#insert_db()
+	#read_db()
 
 if __name__ == "__main__":
 	# If this is ran file then use function main
