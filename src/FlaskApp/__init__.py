@@ -6,6 +6,7 @@ info = static_lol()
 champion_list = info.get_champion_list()
 champ_names = info.get_champion_names()
 black_market_list = info.get_black_market_items()
+all_item_list = info.get_all_items()
 
 app = Flask(__name__, static_folder='static/', static_url_path='')
 
@@ -21,7 +22,7 @@ def about_page():
 @app.route("/black_market")
 def black_market_page():
     items = black_market_list
-    return render_template('black_market.html', items=items)
+    return render_template('black_market.html', items=items, all_items=all_item_list)
 
 @app.route("/brawlers")
 def brawlers_page():

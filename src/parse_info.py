@@ -53,8 +53,9 @@ def static_get_item_list(rw):
 					time.sleep(1)
 				tries -= 1
 
-def print_champion_info(rw):
+def gen_database_info(rw):
 	champ_list =  static_get_champion_list(rw)
+	item_list =  static_get_item_list(rw)
 
 	dir_location = "../info/BILGEWATER_DATASET/BILGEWATER"
 	files_dir = os.listdir(dir_location)
@@ -62,6 +63,7 @@ def print_champion_info(rw):
 	
 	champions = {}
 	champions_stats = {}
+	item_info = {}
 	file_count = 0
 	for file in files_dir:
 		if "_info.json" in file:
@@ -134,6 +136,21 @@ def print_champion_info(rw):
 								else:
 									items[str(item)] = 1
 
+								if str(item) in item_info:
+									old_item_dict = item_info[str(item)]
+									old_games = old_item_dict['games']
+									old_wins = old_item_dict['wins']
+
+									if participant['stats']['winner']:
+										old_wins += 1
+
+									new_dict= {'games':old_games + 1,'wins':old_wins}
+									item_info[str(item)].update(new_dict)
+								else:
+									if participant['stats']['winner']:
+										item_info[str(item)] = {'games':1,'wins':1}
+									else:
+										item_info[str(item)] = {'games':1,'wins':0}
 							champions_stats[champion].update({'kills':old_kills + kills,'deaths':old_deaths + deaths,'assists':old_assists + assists,'minionsKilled':old_minions + minions,'goldEarned':old_gold + gold,"games_won":games_won,"totalDamageDealt":old_totalDamageDealt + totalDamageDealt,"totalDamageTaken":old_totalDamageTaken + totalDamageTaken, "items":items})
 							
 						else:
@@ -150,6 +167,17 @@ def print_champion_info(rw):
 							champions_stats[champion] = {"kills":kills,"deaths":deaths,"assists":assists,"minionsKilled":minions,"goldEarned":gold, "games_won":games_won,"totalDamageDealt":totalDamageDealt,"totalDamageTaken":totalDamageTaken,"bans":0,"items":{}}
 	drop_db()
 	make_db()
+
+	for item in item_list['data']:
+		b_rate = 0
+		w_rate = 0
+		n_games = 0
+		if str(item) in item_info:
+			n_games = item_info[str(item)]['games']
+			b_rate = float("{0:.2f}".format(float(n_games)/(file_count*10000)*100))
+			w_rate = float("{0:.2f}".format((float(item_info[str(item)]['wins']) / n_games)*100))
+		insert_item_db(item,item_list['data'][item]['name'], b_rate, w_rate, n_games)
+
 
 	for champion in champ_list['data']:
 		p_champ = str(champ_list['data'][champion]['id'])
@@ -185,7 +213,7 @@ def print_champion_info(rw):
 				(key,value) = new_item
 				new_sorted.append(key)
 
-			insert_db(p_champ, real_name, display_name, pick_rate=parcent, num_games=games_num, title=p_champ_title, avg_kills=kills,avg_deaths=deaths,avg_assists=assists, avg_kda=kda, avg_minion_score=avg_minion_score, avg_gold=avg_gold, win_rate=win_rate, avg_dmg_taken=avg_dmg_taken, avg_dmg_delt=avg_dmg_delt,position=position,ban_rate=ban_rate,fav_items=new_sorted)
+			insert_champion_db(p_champ, real_name, display_name, pick_rate=parcent, num_games=games_num, title=p_champ_title, avg_kills=kills,avg_deaths=deaths,avg_assists=assists, avg_kda=kda, avg_minion_score=avg_minion_score, avg_gold=avg_gold, win_rate=win_rate, avg_dmg_taken=avg_dmg_taken, avg_dmg_delt=avg_dmg_delt,position=position,ban_rate=ban_rate,fav_items=new_sorted)
 
 def print_items_info(rw):
 	item_list = static_get_item_list(rw)
@@ -270,12 +298,29 @@ def make_db():
 def read_db():
 	conn = sqlite3.connect('FlaskApp/yarhahar.db')
 	c = conn.cursor()
-	for row in c.execute('SELECT display_name, ban_rate FROM champion ORDER BY ban_rate'):
-		#print row
-		pass
+	for row in c.execute('SELECT * FROM merc ORDER BY display_name'):
+		print row
 	conn.close()
 
-def insert_db(id=1, name=1, display_name=1, avg_kills=1, avg_deaths=1, avg_assists=1, avg_kda=1, avg_minion_score=1, avg_dmg_delt=1, avg_dmg_taken=1, avg_kraken=1, avg_gold=1, pick_rate=1, ban_rate=1, position=1, num_games=1, fav_merc=1, fav_item_list=1, win_rate=1, title=1, fav_items=[1,1,1,1,1,1,1,1,1]):
+def insert_item_db(id=1, display_name=1, buy_rate=1, win_rate=1, num_games=1):
+	conn = sqlite3.connect('FlaskApp/yarhahar.db')
+	params = (id, display_name, buy_rate, win_rate, num_games )
+	c = conn.cursor()
+
+	call = '''INSERT INTO `items` (`id`,`display_name`,`buy_rate`,`win_rate`,`num_games`) VALUES
+					(?,?,?,?,?)
+					'''
+
+	c.execute(call,params)
+
+	# Save (commit) the changes
+	conn.commit()
+
+	# We can also close the connection if we are done with it.
+	# Just be sure any changes have been committed or they will be lost.
+	conn.close()
+
+def insert_champion_db(id=1, name=1, display_name=1, avg_kills=1, avg_deaths=1, avg_assists=1, avg_kda=1, avg_minion_score=1, avg_dmg_delt=1, avg_dmg_taken=1, avg_kraken=1, avg_gold=1, pick_rate=1, ban_rate=1, position=1, num_games=1, fav_merc=1, fav_item_list=1, win_rate=1, title=1, fav_items=[1,1,1,1,1,1,1,1,1]):
 	conn = sqlite3.connect('FlaskApp/yarhahar.db')
 	fav_item0 = fav_items[0]
 	fav_item1 = fav_items[1]
@@ -310,15 +355,47 @@ def insert_db(id=1, name=1, display_name=1, avg_kills=1, avg_deaths=1, avg_assis
 	# Just be sure any changes have been committed or they will be lost.
 	conn.close()
 
+def test_timeline(rw):
+	dir_location = "../info/BILGEWATER_DATASET/BILGEWATER"
+	files_dir = os.listdir(dir_location)
+
+	
+	file_count = 0
+	for file in files_dir:
+		if "testing_stuff.json" in file:
+			file_count += 1
+			with open(dir_location + "/" + file, 'r') as data_file:
+				line_limit = 0
+				for line in data_file:
+					if line_limit == 0:
+						clean_line = line[1:len(line)-2]
+						match = json.loads(clean_line)
+						# looking for match['timeline']
+						for frame in match['timeline']['frames']:
+							if "events" in frame.keys():
+								for event in frame['events']:
+									if "ITEM_PURCHASED" == event['eventType']:
+										if event['itemId'] in [3611,3612,3613,3614]:
+											# Merc Types
+											print "MERC: " +  str(event['itemId']) + " " + str(event['participantId'])
+										if event['itemId'] in [3615,3616,3617,  3621,3622,3623,   3624,3625,3626]:
+											# Upgrades
+											print "UPGRADE: " +  str(event['itemId']) + " " + str(event['participantId'])
+
+					else:
+						pass
+					line_limit += 1
+
+
 def main():
 	api_key = get_file("api.key")
 
 	## init RiotWatcher
 	rw = RiotWatcher(api_key)
+	test_timeline(rw)
+	#gen_database_info(rw)
 
-	print_champion_info(rw)
-
-	#read_db()
+	read_db()
 
 if __name__ == "__main__":
 	# If this is ran file then use function main
