@@ -37,7 +37,10 @@ def champion_info_page():
 def champion_page(champion=None):
     if str(champion) in champ_names:
       stats = info.get_specific_champ(champion)[0]
-      items = ['1001','1001','1001','1001','1001','1001','1001','1001','1001']
+      pre_items = info.get_specific_champ_items(champion)[0]
+      items = []
+      for item in pre_items:
+        items.append(str(item))
       return render_template('champion.html', champion=champion, items=items, stats=stats)
     else:
       return render_template('404.html'), 404

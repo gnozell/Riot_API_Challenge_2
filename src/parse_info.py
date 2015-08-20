@@ -90,7 +90,7 @@ def print_champion_info(rw):
 									new_b = champions_stats[champion]['bans'] + 1
 									champions_stats[champion].update({"bans":new_b})
 								else:
-									champions_stats[champion] = {"kills":0,"deaths":0,"assists":0,"minionsKilled":0,"goldEarned":0, "games_won":0,"totalDamageDealt":0,"totalDamageTaken":0,"bans":1}
+									champions_stats[champion] = {"kills":0,"deaths":0,"assists":0,"minionsKilled":0,"goldEarned":0, "games_won":0,"totalDamageDealt":0,"totalDamageTaken":0,"bans":1,"items":{}}
 
 					for participant in match['participants']:
 						champion = str(participant['championId'])
@@ -125,7 +125,16 @@ def print_champion_info(rw):
 							if participant['stats']['winner']:
 								games_won += 1
 
-							champions_stats[champion].update({'kills':old_kills + kills,'deaths':old_deaths + deaths,'assists':old_assists + assists,'minionsKilled':old_minions + minions,'goldEarned':old_gold + gold,"games_won":games_won,"totalDamageDealt":old_totalDamageDealt + totalDamageDealt,"totalDamageTaken":old_totalDamageTaken + totalDamageTaken})
+							items = champions_stats[champion]['items']
+							for item in [participant['stats']['item0'],participant['stats']['item1'], participant['stats']['item2'],participant['stats']['item3'],participant['stats']['item4'],participant['stats']['item5'],participant['stats']['item6']]:
+								if str(item) in items:
+									old_item_count = items[str(item)]
+									items[str(item)] = old_item_count + 1
+
+								else:
+									items[str(item)] = 1
+
+							champions_stats[champion].update({'kills':old_kills + kills,'deaths':old_deaths + deaths,'assists':old_assists + assists,'minionsKilled':old_minions + minions,'goldEarned':old_gold + gold,"games_won":games_won,"totalDamageDealt":old_totalDamageDealt + totalDamageDealt,"totalDamageTaken":old_totalDamageTaken + totalDamageTaken, "items":items})
 							
 						else:
 							kills = participant['stats']['kills']
@@ -138,11 +147,10 @@ def print_champion_info(rw):
 							games_won = 0
 							if participant['stats']['winner']:
 								games_won += 1
-							champions_stats[champion] = {"kills":kills,"deaths":deaths,"assists":assists,"minionsKilled":minions,"goldEarned":gold, "games_won":games_won,"totalDamageDealt":totalDamageDealt,"totalDamageTaken":totalDamageTaken,"bans":0}
+							champions_stats[champion] = {"kills":kills,"deaths":deaths,"assists":assists,"minionsKilled":minions,"goldEarned":gold, "games_won":games_won,"totalDamageDealt":totalDamageDealt,"totalDamageTaken":totalDamageTaken,"bans":0,"items":{}}
 	drop_db()
 	make_db()
-	
-	totalparc = 0
+
 	for champion in champ_list['data']:
 		p_champ = str(champ_list['data'][champion]['id'])
 		p_champ_title = str(champ_list['data'][champion]['title'])
@@ -162,9 +170,22 @@ def print_champion_info(rw):
 			avg_dmg_taken = int(float(champions_stats[p_champ]['totalDamageTaken'])/games_num)
 			position = champ_list['data'][champion]['tags'][0]
 			ban_rate = float("{0:.2f}".format((float(champions_stats[p_champ]['bans']) / (10000*file_count)) * 100))
-			totalparc += parcent
-			insert_db(p_champ, real_name, display_name, pick_rate=parcent, num_games=games_num, title=p_champ_title, avg_kills=kills,avg_deaths=deaths,avg_assists=assists, avg_kda=kda, avg_minion_score=avg_minion_score, avg_gold=avg_gold, win_rate=win_rate, avg_dmg_taken=avg_dmg_taken, avg_dmg_delt=avg_dmg_delt,position=position,ban_rate=ban_rate)
-	print totalparc
+
+			item_list = []
+
+			for del_item in ['0','3340','3341','3342','3361','3362','3363','3364']:
+				if del_item in champions_stats[p_champ]['items']:
+					del champions_stats[p_champ]['items'][del_item]
+			for item, value in champions_stats[p_champ]['items'].iteritems():
+				item_list.append((item, value))
+
+			sorted_list = sorted(item_list, key=lambda tup: tup[1], reverse=True)
+			new_sorted = []
+			for new_item in sorted_list[:9]:
+				(key,value) = new_item
+				new_sorted.append(key)
+
+			insert_db(p_champ, real_name, display_name, pick_rate=parcent, num_games=games_num, title=p_champ_title, avg_kills=kills,avg_deaths=deaths,avg_assists=assists, avg_kda=kda, avg_minion_score=avg_minion_score, avg_gold=avg_gold, win_rate=win_rate, avg_dmg_taken=avg_dmg_taken, avg_dmg_delt=avg_dmg_delt,position=position,ban_rate=ban_rate,fav_items=new_sorted)
 
 def print_items_info(rw):
 	item_list = static_get_item_list(rw)
@@ -221,10 +242,19 @@ def make_db():
 		  `position` INTEGER NULL DEFAULT NULL,
 		  `num_games` INTEGER NULL DEFAULT NULL,
 		  `fav_merc` INTEGER NULL DEFAULT NULL,
-		  `fav_item_list` INTEGER NULL DEFAULT NULL,
+		  `fav_item0` INTEGER NULL DEFAULT NULL,
+		  `fav_item1` INTEGER NULL DEFAULT NULL,
+		  `fav_item2` INTEGER NULL DEFAULT NULL,
+		  `fav_item3` INTEGER NULL DEFAULT NULL,
+		  `fav_item4` INTEGER NULL DEFAULT NULL,
+		  `fav_item5` INTEGER NULL DEFAULT NULL,
+		  `fav_item6` INTEGER NULL DEFAULT NULL,
+		  `fav_item7` INTEGER NULL DEFAULT NULL,
+		  `fav_item8` INTEGER NULL DEFAULT NULL,
+
 		  `win_rate` INTEGER NULL DEFAULT NULL,
 		  `title` VARCHAR NULL DEFAULT NULL,
-		  PRIMARY KEY (`id`, `fav_merc`, `fav_item_list`)
+		  PRIMARY KEY (`id`, `fav_merc`)
 		);''')
 
 	# Insert a row of data
@@ -241,21 +271,35 @@ def read_db():
 	conn = sqlite3.connect('FlaskApp/yarhahar.db')
 	c = conn.cursor()
 	for row in c.execute('SELECT display_name, ban_rate FROM champion ORDER BY ban_rate'):
-		print row
+		#print row
+		pass
 	conn.close()
 
-def insert_db(id=1, name=1, display_name=1, avg_kills=1, avg_deaths=1, avg_assists=1, avg_kda=1, avg_minion_score=1, avg_dmg_delt=1, avg_dmg_taken=1, avg_kraken=1, avg_gold=1, pick_rate=1, ban_rate=1, position=1, num_games=1, fav_merc=1, fav_item_list=1, win_rate=1, title=1):
+def insert_db(id=1, name=1, display_name=1, avg_kills=1, avg_deaths=1, avg_assists=1, avg_kda=1, avg_minion_score=1, avg_dmg_delt=1, avg_dmg_taken=1, avg_kraken=1, avg_gold=1, pick_rate=1, ban_rate=1, position=1, num_games=1, fav_merc=1, fav_item_list=1, win_rate=1, title=1, fav_items=[1,1,1,1,1,1,1,1,1]):
 	conn = sqlite3.connect('FlaskApp/yarhahar.db')
+	fav_item0 = fav_items[0]
+	fav_item1 = fav_items[1]
+	fav_item2 = fav_items[2]
+	fav_item3 = fav_items[3]
+	fav_item4 = fav_items[4]
+	fav_item5 = fav_items[5]
+	fav_item6 = fav_items[6]
+	fav_item7 = fav_items[7]
+	fav_item8 = fav_items[8]
+
 	params = (id, name, display_name, avg_kills, avg_deaths, avg_assists, 
 		avg_kda, avg_minion_score, avg_dmg_delt, avg_dmg_taken, avg_kraken,
-		 avg_gold, pick_rate, ban_rate, position, num_games, fav_merc, fav_item_list, win_rate, title)
+		 avg_gold, pick_rate, ban_rate, position, num_games, fav_merc, win_rate, title,
+		 fav_item0, fav_item1, fav_item2, fav_item3, fav_item4, fav_item5, fav_item6, fav_item7, fav_item8)
 	c = conn.cursor()
 	call = '''INSERT INTO `champion` (`id`,`name`,`display_name`,
 					`avg_kills`,`avg_deaths`,`avg_assists`,`avg_kda`,`avg_minion_score`,
 					`avg_dmg_delt`,`avg_dmg_taken`,`avg_kraken`,`avg_gold`,`pick_rate`,
-					`ban_rate`,`position`,`num_games`,`fav_merc`,`fav_item_list`,`win_rate`,`title`) VALUES
+					`ban_rate`,`position`,`num_games`,`fav_merc`,`win_rate`,`title`,
+					`fav_item0`,`fav_item1`,`fav_item2`,`fav_item3`,`fav_item4`,`fav_item5`,
+					`fav_item6`,`fav_item7`,`fav_item8`) VALUES
 
-					(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+					(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
 					'''
 	c.execute(call,params)
 
@@ -274,7 +318,7 @@ def main():
 
 	print_champion_info(rw)
 
-	read_db()
+	#read_db()
 
 if __name__ == "__main__":
 	# If this is ran file then use function main
