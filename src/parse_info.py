@@ -64,9 +64,11 @@ def gen_database_info(rw):
 	champions = {}
 	champions_stats = {}
 	item_info = {}
+	merc_stats = {}
 	file_count = 0
 	for file in files_dir:
-		if "_info.json" in file:
+		#if "_info.json" in file:
+		if "NA_info.json" in file:
 			file_count += 1
 			with open(dir_location + "/" + file, 'r') as data_file:
 				count = 0;
@@ -80,9 +82,28 @@ def gen_database_info(rw):
 						clean_line = line[:len(line)-2]
 					count += 1
 					
-					print file + ": " + str(count)
+					if count%500 == 0:
+						print file + ": " + str(count)
 
 					match = json.loads(clean_line)
+					
+					
+					for frame in match['timeline']['frames']:
+							if "events" in frame.keys():
+								for event in frame['events']:
+									if "ITEM_PURCHASED" == event['eventType']:
+										if event['itemId'] in [3611,3612,3613,3614]:
+											if str(event['itemId']) in merc_stats:
+												new_games = merc_stats[str(event['itemId'])]['games'] + 1
+												new_wins = merc_stats[str(event['itemId'])]['wins']
+												if match['participants'][event['participantId']-1]['stats']['winner']:
+													new_wins += 1
+												merc_stats[str(event['itemId'])].update({'games':new_games, 'wins':new_wins})
+											else:
+												new_wins = 0
+												if match['participants'][event['participantId']-1]['stats']['winner']:
+													new_wins += 1
+												merc_stats[str(event['itemId'])] = {'games':1,'wins':new_wins}
 
 					for team in match['teams']:
 						if "bans" in team:
@@ -129,6 +150,9 @@ def gen_database_info(rw):
 
 							items = champions_stats[champion]['items']
 							for item in [participant['stats']['item0'],participant['stats']['item1'], participant['stats']['item2'],participant['stats']['item3'],participant['stats']['item4'],participant['stats']['item5'],participant['stats']['item6']]:
+								#if str(item) == "3165":
+								#	print "WE DID IT -------------------------------------------------------------------------"
+								
 								if str(item) in items:
 									old_item_count = items[str(item)]
 									items[str(item)] = old_item_count + 1
@@ -174,11 +198,22 @@ def gen_database_info(rw):
 		n_games = 0
 		if str(item) in item_info:
 			n_games = item_info[str(item)]['games']
-			b_rate = float("{0:.2f}".format(float(n_games)/(file_count*10000)*100))
+			b_rate = float("{0:.2f}".format(float(n_games)/(file_count*100000)*100))
 			w_rate = float("{0:.2f}".format((float(item_info[str(item)]['wins']) / n_games)*100))
 		insert_item_db(item,item_list['data'][item]['name'], b_rate, w_rate, n_games)
 
-
+	for merc in merc_stats:
+		if merc in item_list['data']:
+			name = item_list['data'][merc]['name']
+		else:
+			name = "error"
+		merc_dict = merc_stats[merc]
+		games_num = merc_dict['games']
+		total_wins = merc_dict['wins']
+		buy_rate = float("{0:.2f}".format((float(games_num) / (100000*file_count)) * 100))
+		win_rate = float("{0:.2f}".format((float(total_wins) / games_num) * 100))
+		insert_merc_db(id=merc, display_name=name, games_played=games_num, buy_rate=buy_rate, win_rate=win_rate)
+		
 	for champion in champ_list['data']:
 		p_champ = str(champ_list['data'][champion]['id'])
 		p_champ_title = str(champ_list['data'][champion]['title'])
@@ -186,7 +221,7 @@ def gen_database_info(rw):
 			games_num = champions[p_champ]
 			parcent = (float(games_num) / (10000*file_count)) * 100
 			display_name = champ_list['data'][champion]['name']
-			real_name = champion[0] + champion[1:].lower()
+			real_name = champion
 			kills = float("{0:.2f}".format(float(champions_stats[p_champ]['kills'])/games_num))
 			deaths = float("{0:.2f}".format(float(champions_stats[p_champ]['deaths'])/games_num))
 			assists = float("{0:.2f}".format(float(champions_stats[p_champ]['assists'])/games_num))
@@ -201,7 +236,13 @@ def gen_database_info(rw):
 
 			item_list = []
 
-			for del_item in ['0','3340','3341','3342','3361','3362','3363','3364']:
+			for del_item in ['0','3340','3341','3342','3361','3362','3363','3364',
+							'1300','1301','1302','1303','1304','1305','1306','1307',
+							'1308','1309','1310','1311','1312','1313','1314','1315',
+							'1316','1317','1318','1319','1320','1321','1322','1323',
+							'1324','1325','1326','1327','1328','1329','1330','1331',
+							'1332','1333','1334','1335','1336','1337','1338','1339',
+							'1340','1341']:
 				if del_item in champions_stats[p_champ]['items']:
 					del champions_stats[p_champ]['items'][del_item]
 			for item, value in champions_stats[p_champ]['items'].iteritems():
@@ -236,6 +277,7 @@ def make_db():
 		  `id` INTEGER NULL DEFAULT NULL,
 		  `display_name` VARCHAR NULL DEFAULT NULL,
 		  `win_rate` INTEGER NULL DEFAULT NULL,
+		  `buy_rate` INTEGER NULL DEFAULT NULL,
 		  `games_played` INTEGER NULL DEFAULT NULL,
 		  `ability_rank` INTEGER NULL DEFAULT NULL,
 		  `offense_rank` INTEGER NULL DEFAULT NULL,
@@ -298,8 +340,26 @@ def make_db():
 def read_db():
 	conn = sqlite3.connect('FlaskApp/yarhahar.db')
 	c = conn.cursor()
-	for row in c.execute('SELECT * FROM merc ORDER BY display_name'):
+	for row in c.execute('SELECT * FROM merc'):
 		print row
+	conn.close()
+	
+def insert_merc_db(id=1, display_name=1, buy_rate=1, win_rate=1, games_played=1):
+	conn = sqlite3.connect('FlaskApp/yarhahar.db')
+	params = (id, display_name, buy_rate, win_rate, games_played)
+	c = conn.cursor()
+
+	call = '''INSERT INTO `merc` (`id`,`display_name`,`buy_rate`,`win_rate`,`games_played`) VALUES
+					(?,?,?,?,?)
+					'''
+
+	c.execute(call,params)
+
+	# Save (commit) the changes
+	conn.commit()
+
+	# We can also close the connection if we are done with it.
+	# Just be sure any changes have been committed or they will be lost.
 	conn.close()
 
 def insert_item_db(id=1, display_name=1, buy_rate=1, win_rate=1, num_games=1):
@@ -358,33 +418,53 @@ def insert_champion_db(id=1, name=1, display_name=1, avg_kills=1, avg_deaths=1, 
 def test_timeline(rw):
 	dir_location = "../info/BILGEWATER_DATASET/BILGEWATER"
 	files_dir = os.listdir(dir_location)
-
+	drop_db()
+	make_db()
 	
 	file_count = 0
+	merc_stats = {}
 	for file in files_dir:
-		if "testing_stuff.json" in file:
+		if "NA_info.json" in file:
 			file_count += 1
 			with open(dir_location + "/" + file, 'r') as data_file:
-				line_limit = 0
+				count = 0
 				for line in data_file:
-					if line_limit == 0:
-						clean_line = line[1:len(line)-2]
+					if count < 100:
+						clean_line = ""
+						if count == 0:
+							clean_line = line[1:len(line)-2]
+						elif count == 9999:
+							clean_line = line[:len(line)-1]
+						else:
+							clean_line = line[:len(line)-2]
+						count += 1
+
 						match = json.loads(clean_line)
-						# looking for match['timeline']
+						
 						for frame in match['timeline']['frames']:
 							if "events" in frame.keys():
 								for event in frame['events']:
 									if "ITEM_PURCHASED" == event['eventType']:
 										if event['itemId'] in [3611,3612,3613,3614]:
-											# Merc Types
-											print "MERC: " +  str(event['itemId']) + " " + str(event['participantId'])
+											if str(event['itemId']) in merc_stats:
+												new_games = merc_stats[str(event['itemId'])]['games'] + 1
+											
+												merc_stats[str(event['itemId'])].update({'games':new_games})
+											else:
+												merc_stats[str(event['itemId'])] = {'games':1}
+											
+											
 										if event['itemId'] in [3615,3616,3617,  3621,3622,3623,   3624,3625,3626]:
 											# Upgrades
-											print "UPGRADE: " +  str(event['itemId']) + " " + str(event['participantId'])
-
+											#print "UPGRADE: " +  str(event['itemId']) + " " + str(event['participantId'])
+											pass
 					else:
 						pass
-					line_limit += 1
+					count += 1
+	for merc in merc_stats:
+		merc_dict = merc_stats[merc]
+		insert_merc_db(id=merc, games_played=merc_dict['games'])
+		
 
 
 def main():
@@ -392,8 +472,9 @@ def main():
 
 	## init RiotWatcher
 	rw = RiotWatcher(api_key)
-	test_timeline(rw)
-	#gen_database_info(rw)
+	#test_timeline(rw)
+	#test_timeline(rw)
+	gen_database_info(rw)
 
 	read_db()
 

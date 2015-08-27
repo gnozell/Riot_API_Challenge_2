@@ -6,7 +6,14 @@ class static_lol:
 		self.champion_names = self.gen_champ_display_name()
 		self.black_market_list = self.gen_black_market_list()
 		self.item_list = self.gen_item_list()
+		self.merc_ironbacks = self.gen_merc("ironback")
+		self.merc_ocklepods = self.gen_merc("ocklepods")
+		self.merc_plundercrabs = self.gen_merc("plundercrabs")
+		self.merc_razorfins = self.gen_merc("razorfins")
 
+	def gen_merc(self, type):
+		return ("0","0","0","0","0","0")
+		
 	def gen_item_list(self):
 		conn = sqlite3.connect('FlaskApp/yarhahar.db')
 		c = conn.cursor()
@@ -20,11 +27,10 @@ class static_lol:
 								"3623","3622","3621","1074","3184","2050","3901","3460","3159","2051","3187",
 								"3348","3612","3104","3106","3008","3137","1075","1076","3241","3242","3243",
 								"3240","3244","3245","2043","3196","3197","3599","2044","3200","3198","2004",
-								"2003","2138","2137","2140","2139","3043"]:
+								"2003","2138","2137","2140","2139","3043","3053","3748"]:
 				items.append( (str(id),name, str(buy_r), str(win_r), str(games)) )
 		conn.close()
 		return items
-
 
 	def gen_black_market_list(self):
 		conn = sqlite3.connect('FlaskApp/yarhahar.db')
@@ -60,7 +66,7 @@ class static_lol:
 		c = conn.cursor()
 		champs = []
 		params = [champion_name]
-		for row in c.execute('SELECT pick_rate, win_rate, avg_kills, avg_deaths, avg_assists, avg_kda, position, avg_kraken, fav_merc, num_games, avg_minion_score, avg_dmg_delt, avg_dmg_taken, display_name, title FROM champion WHERE name=?',params):
+		for row in c.execute('SELECT display_name, title, pick_rate, win_rate, ban_rate, avg_kills, avg_deaths, avg_assists, avg_kda, position, avg_gold, num_games, avg_minion_score, avg_dmg_delt, avg_dmg_taken FROM champion WHERE name=?',params):
 			champs.append(row)
 		conn.close()
 		return champs
@@ -86,3 +92,15 @@ class static_lol:
 
 	def get_all_items(self):
 		return self.item_list
+		
+	def get_merc_info(self, merctype):
+		if merctype == "ironbacks":
+			return self.merc_ironbacks
+		elif merctype == "ocklepods":
+			return self.merc_ocklepods
+		elif merctype == "plundercrabs":
+			return self.merc_plundercrabs
+		elif merctype == "razorfins":
+			return self.merc_razorfins
+		else:
+			return ("error","error","error","error","error","error")

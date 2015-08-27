@@ -45,7 +45,7 @@ def main():
 	api_key = get_file("api.key")
 
 	## init RiotWatcher
-	rw = RiotWatcher(api_key)
+	rw = RiotWatcher(api_key.strip())
 
 	# location of the matchIDs if you want AP_ITEM_DATASET change to
 	# the appropriate directory

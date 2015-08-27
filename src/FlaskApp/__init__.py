@@ -7,13 +7,16 @@ champion_list = info.get_champion_list()
 champ_names = info.get_champion_names()
 black_market_list = info.get_black_market_items()
 all_item_list = info.get_all_items()
+ironback_stats = info.get_merc_info("ironbacks")
+ocklepods_stats = info.get_merc_info("ocklepods")
+plundercrabs_stats = info.get_merc_info("plundercrabs")
+razorfins_stats = info.get_merc_info("razorfins")
 
 app = Flask(__name__, static_folder='static/', static_url_path='')
 
 @app.route("/")
 def index_page():
-    stats = {}
-    return render_template('index.html', stats=stats)
+    return render_template('index.html')
 
 @app.route("/about")
 def about_page():
@@ -21,18 +24,15 @@ def about_page():
 
 @app.route("/black_market")
 def black_market_page():
-    items = black_market_list
-    return render_template('black_market.html', items=items, all_items=all_item_list)
+    return render_template('black_market.html', items=black_market_list, all_items=all_item_list)
 
 @app.route("/brawlers")
 def brawlers_page():
-    stats = {}
-    return render_template('brawlers.html', stats=stats)
+    return render_template('brawlers.html', ironback_stats=ironback_stats, ocklepods_stats=ocklepods_stats, plundercrabs_stats=plundercrabs_stats, razorfins_stats=razorfins_stats)
 
 @app.route("/champion")
 def champion_info_page():
-    stats = {}
-    return render_template('champion_info.html', stats=stats, champion_list=champion_list)
+    return render_template('champion_info.html', champion_list=champion_list)
 
 @app.route("/champion/<champion>")
 def champion_page(champion=None):
