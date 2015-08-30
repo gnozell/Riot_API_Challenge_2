@@ -492,7 +492,7 @@ def main():
 	api_key = get_file("api.key")
 
 	## init RiotWatcher
-	rw = RiotWatcher(api_key)
+	rw = RiotWatcher(api_key.strip())
 	#test_timeline(rw)
 	#test_timeline(rw)
 	gen_database_info(rw)
