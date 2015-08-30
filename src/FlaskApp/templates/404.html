@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<!-- 
+		Hey if you're looking at the page source maybe you would like to 
+		see the git repo: https://github.com/gnozell/Riot_API_Challenge_2
+
+		This is my entry to the Riot Games API Challenge 2. Yar Ha Har! is 
+		a website designed to show off summoners choices when playing the 
+		Black Market Brawlers game mode. 
+
+		More information about what Black Market Brawlers game mode was like
+		can be found here: http://leagueoflegends.wikia.com/wiki/Black_Market_Brawlers
+
+		favicon.ico from http://www.favicon.cc/?action=icon&file_id=753610 
+		video from riot games
+
+	-->
+	<head>
+    	<link rel='stylesheet' href='{{url_for('static', filename='css/style.css')}}'>
+    	<link rel="icon" type="image/ico" href="{{url_for('static', filename='img/favicon.ico')}}">
+    	<title>Yar Ha Har!</title>
+    	<meta name="author" content="Griffin Nozell">
+    	<meta name="keywords" content="League of Legends,API,League,of,Legends,LoL,Riot,Challenge,YarHaHar">
+    	<meta name="description" content="A submission to the League of Legends API Challenge 2">
+    	<meta charset="UTF-8">
+	</head>
+
+	<body>
+
+		<div class="fullscreen-bg">
+		    <video loop muted autoplay poster="{{ url_for('static', filename='img/missfortune_videoframe.jpg') }}" class="fullscreen-bg__video">
+		        <source src="{{ url_for('static', filename='video/missfortune_animated.mp4') }}" type="video/mp4">
+		    </video>
+		</div>
+		
+		<div class='mainarea'>
+			<header>
+				WANTED DEAD OR ALIVE
+	    	</header>
+			
+			<nav>
+				 <a href="{{ url_for('index_page') }}">Most Wanted</a> |
+				 <a href="{{ url_for('champion_info_page') }}">Champion Information</a> |
+				 <a href="{{ url_for('brawlers_page') }}">Brawlers</a> |
+				 <a href="{{ url_for('black_market_page') }}">Black Market</a> |
+				 <a href="{{ url_for('about_page') }}">About</a>
+			</nav>
+			
+			<div class="divider">
+				<img src="{{url_for('static', filename='img/bilgewater_event/brochure-section-divider.png')}}" alt='Bilgewater Icon'>
+			</div>
+			
+			<div class='textarea'>
+				<h1>404 Error</h1>
+				<p>Woah, that wasn't right. Look, you can't just type junk at the end of a url. You know this right? </p>
+
+			</div>
+		</div>
+	</body>
+</html>

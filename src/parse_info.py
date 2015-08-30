@@ -86,13 +86,14 @@ def gen_database_info(rw):
 						print file + ": " + str(count)
 
 					match = json.loads(clean_line)
-					
+					person_to_merc = {}
 					
 					for frame in match['timeline']['frames']:
 							if "events" in frame.keys():
 								for event in frame['events']:
 									if "ITEM_PURCHASED" == event['eventType']:
 										if event['itemId'] in [3611,3612,3613,3614]:
+											person_to_merc[str(event['participantId']-1)] = event['itemId']
 											if str(event['itemId']) in merc_stats:
 												new_games = merc_stats[str(event['itemId'])]['games'] + 1
 												new_wins = merc_stats[str(event['itemId'])]['wins']
@@ -103,8 +104,11 @@ def gen_database_info(rw):
 												new_wins = 0
 												if match['participants'][event['participantId']-1]['stats']['winner']:
 													new_wins += 1
-												merc_stats[str(event['itemId'])] = {'games':1,'wins':new_wins}
-
+												merc_stats[str(event['itemId'])] = {'games':1,'wins':new_wins, "3615":0, "3616":0, "3617":0, "3621":0, "3622":0, "3623":0, "3624":0, "3625":0, "3626":0}
+										if event['itemId'] in [3615,3616,3617,  3621,3622,3623,  3624,3625,3626]:
+											merc_id = str(person_to_merc[str(event['participantId']-1)])
+											new_stat = merc_stats[merc_id][str(event['itemId'])] + 1
+											merc_stats[merc_id].update({str(event['itemId']):new_stat})
 					for team in match['teams']:
 						if "bans" in team:
 							for bans in team['bans']:
@@ -212,7 +216,24 @@ def gen_database_info(rw):
 		total_wins = merc_dict['wins']
 		buy_rate = float("{0:.2f}".format((float(games_num) / (100000*file_count)) * 100))
 		win_rate = float("{0:.2f}".format((float(total_wins) / games_num) * 100))
-		insert_merc_db(id=merc, display_name=name, games_played=games_num, buy_rate=buy_rate, win_rate=win_rate)
+		
+		a1 = merc_dict['3615']
+		a2 = merc_dict['3616']
+		a3 = merc_dict['3617']
+		
+		o1 = merc_dict['3621']
+		o2 = merc_dict['3622']
+		o3 = merc_dict['3623']
+		
+		d1 = merc_dict['3624']
+		d2 = merc_dict['3625']
+		d3 = merc_dict['3626']
+		
+		aAverage = float("{0:.2f}".format(float(( (a1 -a2 -a3)*1 ) + ( (a2 -a3)*2 ) + ( a3*3 )) / games_num))
+		oAverage = float("{0:.2f}".format(float(( (o1 -o2 -o3)*1 ) + ( (o2 -o3)*2 ) + ( o3*3 )) / games_num))
+		dAverage = float("{0:.2f}".format(float(( (d1 -d2 -d3)*1 ) + ( (d2 -d3)*2 ) + ( d3*3 )) / games_num))
+		
+		insert_merc_db(id=merc, display_name=name, games_played=games_num, buy_rate=buy_rate, win_rate=win_rate, ability_rank=aAverage, defense_rank=dAverage, offense_rank=oAverage)
 		
 	for champion in champ_list['data']:
 		p_champ = str(champ_list['data'][champion]['id'])
@@ -344,13 +365,13 @@ def read_db():
 		print row
 	conn.close()
 	
-def insert_merc_db(id=1, display_name=1, buy_rate=1, win_rate=1, games_played=1):
+def insert_merc_db(id=1, display_name=1, buy_rate=1, win_rate=1, games_played=1, ability_rank=1, defense_rank=1, offense_rank=1):
 	conn = sqlite3.connect('FlaskApp/yarhahar.db')
-	params = (id, display_name, buy_rate, win_rate, games_played)
+	params = (id, display_name, buy_rate, win_rate, games_played, ability_rank, defense_rank, offense_rank)
 	c = conn.cursor()
 
-	call = '''INSERT INTO `merc` (`id`,`display_name`,`buy_rate`,`win_rate`,`games_played`) VALUES
-					(?,?,?,?,?)
+	call = '''INSERT INTO `merc` (`id`,`display_name`,`buy_rate`,`win_rate`,`games_played`,`ability_rank`,`defense_rank`,`offense_rank`) VALUES
+					(?,?,?,?,?,?,?,?)
 					'''
 
 	c.execute(call,params)

@@ -6,12 +6,17 @@ class static_lol:
 		self.champion_names = self.gen_champ_display_name()
 		self.black_market_list = self.gen_black_market_list()
 		self.item_list = self.gen_item_list()
-		self.merc_ironbacks = self.gen_merc("ironback")
-		self.merc_ocklepods = self.gen_merc("ocklepods")
-		self.merc_plundercrabs = self.gen_merc("plundercrabs")
-		self.merc_razorfins = self.gen_merc("razorfins")
+		self.merc_ironbacks = self.gen_merc("3612")
+		self.merc_ocklepods = self.gen_merc("3614")
+		self.merc_plundercrabs = self.gen_merc("3613")
+		self.merc_razorfins = self.gen_merc("3611")
 
 	def gen_merc(self, type):
+		conn = sqlite3.connect('FlaskApp/yarhahar.db')
+		c = conn.cursor()
+		for row in c.execute('SELECT win_rate, buy_rate, games_played, ability_rank, offense_rank, defense_rank  FROM merc WHERE id=?',[type]):
+			return row
+		conn.close()
 		return ("0","0","0","0","0","0")
 		
 	def gen_item_list(self):

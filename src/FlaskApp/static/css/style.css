@@ -1,3 +1,20 @@
+@font-face {
+    font-family: 'body_font';
+    src: url('../fonts/OpenSans-Bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'header_font';
+    src: url('../fonts/BOYCOTT_.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
 .fullscreen-bg {
   position: fixed;
   top: 0;
@@ -8,7 +25,7 @@
   z-index: -100;
 }
 
-.fullscreen-bg__video {
+.fullscreen-bg__video  {
   position: absolute;
   top: 0;
   left: 0;
@@ -16,53 +33,245 @@
   height: 100%;
 }
 
+.fullscreen-bg__img{
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.mainarea {
+  background-image: url("../img/wornpaper.jpg");
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  opacity:.8;
+  margin: 26px auto 0;
+  min-height: 300px;
+  padding: 24px;
+  position: relative;
+  width: 80%;
+	transform: rotate(1.4deg);
+}
+.mainarea:before, .mainarea:after {
+  content: "";
+  height: 98%;
+  position: absolute;
+  width: 100%;
+  z-index: -1;
+}
+.mainarea:before {
+  background-image: url("../img/wornpaper1.jpg");
+  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+  left: -5px;
+  top: 4px;
+  transform: rotate(-3.9deg);
+}
+.mainarea:after {
+  background-image: url("../img/wornpaper2.jpg");
+  box-shadow: 0 0 3px rgba(0,0,0,0.2);
+  right: -3px;
+  top: 1px;
+  transform: rotate(-1.4deg);
+}
+	
 .textarea{
-    background-color: white;
-    font-family: Verdana, Geneva, sans-serif;
+	min-height: 750px;
+	font-size: 20px;
+	font-family: body_font; 
+	transform: rotate(-1.4deg);
+}
+
+.wantedtable{
+	padding-left:50px;
+	padding-top:20px;
+	padding-bottom:20px;
+	border-radius: 25px;
+	background: linear-gradient(to right, rgba(30, 30, 30, 0.7), rgba(0,0,0,0));
+	background-repeat:no-repeat;
+	margin:5px;
+	
+}
+
+.divider img{
+	display: block;
     margin-left: auto;
     margin-right: auto;
-    min-height: 750px;
-    padding: 10px;
-    width: 80%;
-    word-wrap: break-word;
-    opacity: 0.7;
-    }
+	transform: rotate(-1.4deg);
+}
+
+.wantedtable dl dd img{
+	height:75px;
+	width:75px;
+	float:left;
+	padding-top:25px;
+	padding-left:10px;
+}
+
+.wantedtable dl dd p{
+	padding-left:110px;
+}
+
+.blacktable{
+	width:100%;
+	border-spacing: 0px;
+}
+.blacktable th{
+	background-color:black;
+	color:white;
+}
+
+.blacktable td{
+	font-size: 16px;
+	margin:0;
+	padding-right:10px;
+	padding-left:10px;
+	color:white;
+	text-align:right;
+}
+
+.blacktable td:nth-child(1){
+	text-align:left;
+}
+
+.champion_table{
+	width:100%;
+	height:150px;
+	border-spacing: 0px;
+}
+
+.champion_table th{
+	background-color:black;
+	color:white;
+}
+.right_of_champ{
+	padding-left:330px;
+}
+
+.champion_table td{
+	font-size: 20px;
+	margin:0;
+	padding-right:10px;
+	padding-left:10px;
+	color:white;
+	text-align:center;
+}
+
+.champion_table tr:nth-child(odd){
+	background-color:rgba(30, 30, 30, 0.7);
+}
+
+.champion_table tr:nth-child(even){
+	background-color:rgba(20, 20, 20, 0.7);
+}
+
+.blacktable td img{
+	height:25px;
+	width:25px;
+	margin-left: auto;
+    margin-right: auto;
+	display: block;
+	
+}
+
+.champion_portrait{
+	float:left;
+	object-fit: cover;
+	margin-right:20px;
+	width:300px;
+	height:auto;
+}
+
+.champ_info{
+	padding:20px;
+}
+
+.blacktable td a{
+	color:white;
+	text-decoration: none;
+}
+
+.blacktable td a:hover{
+	color:red;
+}
+
+.blacktable tr:nth-child(odd){
+	background-color:rgba(30, 30, 30, 0.7);
+}
+
+.blacktable tr:nth-child(even){
+	background-color:rgba(20, 20, 20, 0.7);
+}
 
 body{
   background-color: #262626;
 }
 
 footer{
-    background-color: white;
-    border-radius: 0px 0px 25px 25px;
     clear: both;
     font-size: .6em;
-    margin-bottom: 100px;
     margin-left: auto;
     margin-right: auto;
-    padding: 10px;
     text-align: center;
-    width: 80%;
-    opacity: 0.7;
+	transform: rotate(-1.4deg);
     }
 
 header{
-          background-color: white;
-          border-radius: 25px 25px 0px 0px;
           color: black;
-          font-family: "Arial Black", Gadget, sans-serif;
-          font-size: 3em;
+          font-family: header_font; 
+          font-size: 7em;
           margin-left: auto;
           margin-right: auto;
-          margin-top:100px;
-          min-height: 100px;
-          padding: 10px;
-          text-align: left;
+		  padding-top:50px;
+          text-align: center;
           text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
-          width: 80%;
-          opacity: 0.7;
-          font-style: italic;
+		  transform: rotate(-1.4deg);
         }
+		
+.merc{
+	float:left;
+	margin-bottom:10px;
+	width:100%;
+
+}
+
+.merc img{
+	float:left;
+	padding-right:10px;
+}
+
+.merctable{
+	clear:both;
+	padding: 10px;
+}
+		
+nav{
+	font-family: header_font; 
+	font-size: 2em;
+	text-align: center;
+	padding-bottom:50px;
+	transform: rotate(-1.4deg);
+}
+
+dt{
+	font-size: 2em;
+}
+
+dd{
+	padding-bottom:50px;
+}
+
+nav a{
+	color: Black;
+	text-decoration: none;
+}
+
+nav a.selected{
+	color: #8A0707;
+}
+
+nav a:hover{
+	color: Red;
+}
 
 @media (min-aspect-ratio: 16/9) {
   .fullscreen-bg__video {
@@ -80,10 +289,53 @@ header{
 
 @media (max-width: 767px) {
   .fullscreen-bg {
-    background: url('../img/videoframe.jpg') center center / cover no-repeat;
+    background: url('../img/gangplank_videoframe.jpg') center center / cover no-repeat;
   }
 
   .fullscreen-bg__video {
     display: none;
   }
+  
+  .mainarea {
+	background-image: url("../img/wornpaper2.jpg");
+	box-shadow: none;
+	opacity:.8;
+	width: 100%;
+	transform: rotate(0deg);
+	}
+	
+	.mainarea:before {
+		content: none;
+	}
+	.mainarea:after {
+	  content: none;
+	}
+	
+	.textarea{
+	transform: rotate(0deg);
+	}
+	
+	header{
+	 transform: rotate(0deg);
+	}
+	
+	footer{
+	 transform: rotate(0deg);
+	}
+	nav{
+	transform: rotate(0deg);
+	}
+	
+	.divider img{
+	 transform: rotate(0deg);
+	}
+	.champion_portrait{
+	display:none;
+	}
+	.champ_info{
+	padding:0px;
+	}
+	.right_of_champ{
+	padding-left:0px;
+}
 }

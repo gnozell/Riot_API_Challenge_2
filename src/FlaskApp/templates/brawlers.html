@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<!-- 
+		Hey if you're looking at the page source maybe you would like to 
+		see the git repo: https://github.com/gnozell/Riot_API_Challenge_2
+
+		This is my entry to the Riot Games API Challenge 2. Yar Ha Har! is 
+		a website designed to show off summoners choices when playing the 
+		Black Market Brawlers game mode. 
+
+		More information about what Black Market Brawlers game mode was like
+		can be found here: http://leagueoflegends.wikia.com/wiki/Black_Market_Brawlers
+
+		favicon.ico from http://www.favicon.cc/?action=icon&file_id=753610 
+		video from riot games
+
+	-->
+	<head>
+    	<link rel='stylesheet' href='{{url_for('static', filename='css/style.css')}}'>
+    	<link rel="icon" type="image/ico" href="{{url_for('static', filename='img/favicon.ico')}}">
+    	<title>Yar Ha Har!</title>
+    	<meta name="author" content="Griffin Nozell">
+    	<meta name="keywords" content="League of Legends,API,League,of,Legends,LoL,Riot,Challenge,YarHaHar">
+    	<meta name="description" content="A submission to the League of Legends API Challenge 2">
+    	<meta charset="UTF-8">
+	</head>
+	<body>
+
+		<div class="fullscreen-bg">
+		    <video loop muted autoplay poster="{{ url_for('static', filename='img/gangplank_new_videoframe.jpg') }}" class="fullscreen-bg__video">
+		        <source src="{{ url_for('static', filename='video/gangplank_new_animated.mp4') }}" type="video/mp4">
+		    </video>
+		</div>
+		
+		<div class='mainarea'>
+		<header>
+			WANTED DEAD OR ALIVE
+    	</header>
+		
+		<nav>
+			 <a href="{{ url_for('index_page') }}">Most Wanted</a> |
+			 <a href="{{ url_for('champion_info_page') }}">Champion Information</a> |
+			 <a href="{{ url_for('brawlers_page') }}" class='selected'>Brawlers</a> |
+			 <a href="{{ url_for('black_market_page') }}">Black Market</a> |
+			 <a href="{{ url_for('about_page') }}">About</a>
+		</nav>
+		
+		<div class="divider">
+			<img src="{{url_for('static', filename='img/bilgewater_event/brochure-section-divider.png')}}" alt='Bilgewater Icon'>
+		</div>
+		
+		<div class='textarea'>
+			<div class="merc">
+				<img src='{{url_for("static", filename="img/bilgewater_event/merc-ironbacks.png")}}' alt='ironbacks Icon'>
+				<h2>IronBacks</h2>
+				<p>Ironbacks are melee tank siege minions. Their ability upgrades grant a shield, reduce damage from minions, or reduce damage from structures.</p>
+				<div class="merctable">
+					<table class="blacktable">
+						<tr><th>Win Rate</th><th>Buy Rate</th><th>Games Played</th></tr>
+						<tr><td>{{ironback_stats[0]}}</td><td>{{ironback_stats[1]}}</td><td>{{ironback_stats[2]}}</td></tr>
+					</table>
+					<table class="blacktable">
+						<tr><th>Average Ability Rank</th><th>Average Offense Rank</th><th>Average Defense Rank</th></tr>
+						<tr><td>{{ironback_stats[3]}}</td><td>{{ironback_stats[4]}}</td><td>{{ironback_stats[5]}}</td></tr>
+					</table>
+				</div>
+			</div>
+			<div class="merc">
+				<img src='{{url_for("static", filename="img/bilgewater_event/merc-ocklepods.png")}}' alt='ocklepods Icon'>
+				<h2>OcklePods</h2>
+				<p>Ocklepods are ranged support utility minions. Their abilities upgrade to grant shields to allied minions, peer into the nearby jungle with clairvoyance effects, and protect from ganks.</p>
+				<div class="merctable">
+					<table class="blacktable">
+						<tr><th>Win Rate</th><th>Buy Rate</th><th>Games Played</th></tr>
+						<tr><td>{{ocklepods_stats[0]}}</td><td>{{ocklepods_stats[1]}}</td><td>{{ocklepods_stats[2]}}</td></tr>
+					</table>
+					<table class="blacktable">
+						<tr><th>Average Ability Rank</th><th>Average Offense Rank</th><th>Average Defense Rank</th></tr>
+						<tr><td>{{ocklepods_stats[3]}}</td><td>{{ocklepods_stats[4]}}</td><td>{{ocklepods_stats[5]}}</td></tr>
+					</table>
+				</div>
+			</div>
+			<div class="merc">
+				<img src='{{url_for("static", filename="img/bilgewater_event/merc-plundercrabs.png")}}' alt='plundercrabs Icon'>
+				<h2>PlunderCrabs</h2>
+				<p>Plundercrabs are ranged champion harass minions. Their ability upgrades increase zone control, raise attack speed, and eventually damages all enemy champs within the zone range.</p>
+			<div class="merctable">
+					<table class="blacktable">
+						<tr><th>Win Rate</th><th>Buy Rate</th><th>Games Played</th></tr>
+						<tr><td>{{plundercrabs_stats[0]}}</td><td>{{plundercrabs_stats[1]}}</td><td>{{plundercrabs_stats[2]}}</td></tr>
+					</table>
+					<table class="blacktable">
+						<tr><th>Average Ability Rank</th><th>Average Offense Rank</th><th>Average Defense Rank</th></tr>
+						<tr><td>{{plundercrabs_stats[3]}}</td><td>{{plundercrabs_stats[4]}}</td><td>{{plundercrabs_stats[5]}}</td></tr>
+					</table>
+				</div>
+			</div>
+			<div class="merc">
+				<img src='{{url_for("static", filename="img/bilgewater_event/merc-razorfins.png")}}' alt='razorfins Icon'>
+				<h2>Razorfins</h2>
+				<p>Razorfins are melee minions that pursue champions. Their ability upgrades help razorfins chase down enemy champions, deal true damage and eventually swarm the enemy with superior numbers.</p>
+				<div class="merctable">
+					<table class="blacktable">
+						<tr><th>Win Rate</th><th>Buy Rate</th><th>Games Played</th></tr>
+						<tr><td>{{razorfins_stats[0]}}</td><td>{{razorfins_stats[1]}}</td><td>{{razorfins_stats[2]}}</td></tr>
+					</table>
+					<table class="blacktable">
+						<tr><th>Average Ability Rank</th><th>Average Offense Rank</th><th>Average Defense Rank</th></tr>
+						<tr><td>{{razorfins_stats[3]}}</td><td>{{razorfins_stats[4]}}</td><td>{{razorfins_stats[5]}}</td></tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		
+		<footer> 
+    		<br>Yar Ha Har! isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends.
+    		<br> League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
+    	</footer>
+		</div>
+	</body>
+</html>

@@ -11,41 +11,86 @@
 		More information about what Black Market Brawlers game mode was like
 		can be found here: http://leagueoflegends.wikia.com/wiki/Black_Market_Brawlers
 
-		favicon.ico from http://www.favicon.cc/?action=icon&file_id=753610 
-		video from riot games
+		
+		Video and Art Assets from Riot Games
+
+		BOYCOTT_ font from: http://www.1001freefonts.com/boycott.font
+		Open Sans font from: http://www.opensans.com/
 
 	-->
 	<head>
-    	<link rel='stylesheet' href='css/style.css'>
-    	<link rel="icon" type="image/ico" href="img/favicon.ico">
+    	<link rel='stylesheet' href='{{url_for('static', filename='css/style.css')}}'>
+    	<link rel="icon" type="image/ico" href="{{url_for('static', filename='img/favicon.ico')}}">
     	<title>Yar Ha Har!</title>
     	<meta name="author" content="Griffin Nozell">
     	<meta name="keywords" content="League of Legends,API,League,of,Legends,LoL,Riot,Challenge,YarHaHar">
-    	<meta name="description" content="Hege Refsnes">
+    	<meta name="description" content="A submission to the League of Legends API Challenge 2">
     	<meta charset="UTF-8">
 	</head>
 	<body>
 
 		<div class="fullscreen-bg">
-		    <video loop muted autoplay poster="img/videoframe.jpg" class="fullscreen-bg__video">
-		        <source src="video/videoplayback.mp4" type="video/mp4">
-		        <source src="video/videoplayback.ogv" type="video/ogv">
-		        <source src="video/videoplayback.webm" type="video/webm">
+		    <video loop muted autoplay poster="{{ url_for('static', filename='img/gangplank_videoframe.jpg') }}" class="fullscreen-bg__video">
+		        <source src="{{ url_for('static', filename='video/gangplank_animated.mp4') }}" type="video/mp4">
 		    </video>
 		</div>
-
+		
+		<div class='mainarea'>
 		<header>
-			Test Header
+			WANTED DEAD OR ALIVE
     	</header>
-
-		<div class='textarea'>
-			<p>hello world</p>
+		
+		<nav>
+			 <a href="{{ url_for('index_page') }}" class='selected'>Most Wanted</a> |
+			 <a href="{{ url_for('champion_info_page') }}">Champion Information</a> |
+			 <a href="{{ url_for('brawlers_page') }}">Brawlers</a> |
+			 <a href="{{ url_for('black_market_page') }}">Black Market</a> |
+			 <a href="{{ url_for('about_page') }}">About</a>
+		</nav>
+		
+		<div class="divider">
+			<img src="{{url_for('static', filename='img/bilgewater_event/brochure-section-divider.png')}}" alt='Bilgewater Icon'>
 		</div>
-
-    	<footer> 
+		
+		<div class='textarea'>
+			<div class="wantedtable">
+				<dl>
+					<dt>Gangplank lives in RU and OCE</dt>
+					<dd>
+						<img src="{{ url_for('static', filename='img/champion/Gangplank.png') }}" alt='Gangplank Icon'>
+						<p>In all other regions expect for RU and OCE gangplank had a 0% play rate.
+						This is probably because of him being disabled for the start of the event.
+						For RU gangplank also had the highest pick rate for the region at 29.7%.</p>
+					</dd>
+					
+					<dt>Every one hates Katarina</dt>
+					<dd>
+						<img src="{{ url_for('static', filename='img/champion/Katarina.png') }}" alt='Katarina Icon'>
+						<p>Katarina was the most banned champion in 8 of the 10 regions, TR seems to have
+						hated her the most with a 82.1% ban rate.</p>
+					</dd>
+					
+					<dt>The best items never bought</dt>
+					<dd>
+						<img src="{{ url_for('static', filename='img/item/1341.png') }}" alt='Katarina Icon'>
+						<p>Players seemed oblivious to the new teleport boots enchantment as only RU and OCE players build these enchantments.
+						With around 60% winrates for these enchantments it seems the other regions missed out.</p>
+					</dd>
+					
+					<dt>No one loves Morello(nomicon)</dt>
+					<dd>
+						<img src="{{ url_for('static', filename='img/item/3165.png') }}" alt='Katarina Icon'>
+						<p>Out of all the 10 regions with 10,000 games each Morellonomicon was never bought.</p>
+					</dd>
+					
+				</dt>
+			</div>
+		</div>
+		
+		<footer> 
     		<br>Yar Ha Har! isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends.
     		<br> League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
     	</footer>
-
+		</div>
 	</body>
 </html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<!-- 
+		Hey if you're looking at the page source maybe you would like to 
+		see the git repo: https://github.com/gnozell/Riot_API_Challenge_2
+
+		This is my entry to the Riot Games API Challenge 2. Yar Ha Har! is 
+		a website designed to show off summoners choices when playing the 
+		Black Market Brawlers game mode. 
+
+		More information about what Black Market Brawlers game mode was like
+		can be found here: http://leagueoflegends.wikia.com/wiki/Black_Market_Brawlers
+
+		favicon.ico from http://www.favicon.cc/?action=icon&file_id=753610 
+		video from riot games
+
+	-->
+	<head>
+    	<link rel='stylesheet' href='{{url_for('static', filename='css/style.css')}}'>
+    	<link rel="icon" type="image/ico" href="{{url_for('static', filename='img/favicon.ico')}}">
+    	<title>Yar Ha Har!</title>
+    	<meta name="author" content="Griffin Nozell">
+    	<meta name="keywords" content="League of Legends,API,League,of,Legends,LoL,Riot,Challenge,YarHaHar">
+    	<meta name="description" content="A submission to the League of Legends API Challenge 2">
+    	<meta charset="UTF-8">
+	</head>
+	<body>
+
+		<div class="fullscreen-bg">
+			<img src="{{url_for('static', filename='img/graves_twistedfate_videoframe.jpg')}}" class="fullscreen-bg__img">
+		</div>
+		
+		<div class='mainarea'>
+		<header>
+			WANTED DEAD OR ALIVE
+    	</header>
+		
+		<nav>
+			 <a href="{{ url_for('index_page') }}">Most Wanted</a> |
+			 <a href="{{ url_for('champion_info_page') }}">Champion Information</a> |
+			 <a href="{{ url_for('brawlers_page') }}">Brawlers</a> |
+			 <a href="{{ url_for('black_market_page') }}">Black Market</a> |
+			 <a href="{{ url_for('about_page') }}" class='selected'>About</a>
+		</nav>
+		
+		<div class="divider">
+			<img src="{{url_for('static', filename='img/bilgewater_event/brochure-section-divider.png')}}" alt='Bilgewater Icon'>
+		</div>
+		
+		<div class='textarea'>
+			<dl>
+				<dt>Hey you! Thanks!</dt>
+				<dd>
+					<p>First off thanks for checking out my website. This website is part of my submission to the League of Legends API Challenge 2.</p>
+				</dd>
+				
+				<dt>What is the League of Legends API Challenge?</dt>
+				<dd>
+					<p>The League of Legends API Challenge is a competition hosted by Riot Games and is a chance for developers in the League of Legends community to share their skills and produce some fun content using the API.</p>
+				
+					<p><a href="http://na.leagueoflegends.com/en/news/community/contests/riot-games-api-challenge-20">Here</a> is a link to the announcement.</p>
+				</dd>
+				
+				<dt>Data Set</dt>
+				<dd>
+					<p>The data set used on this website was collected from 10 game Json files provided by Riot Games for the Bilgewater subset of the competition.</p>
+					<a href="https://s3-us-west-1.amazonaws.com/riot-api/api_challenge/BILGEWATER_DATASET.zip">Click here download the zip</a>
+				</dd>
+				
+				<dt>Who are you?</dt>
+				<dd>
+					<p>My name is Griffin Nozell, my summoner is DrSunshine, I'm a platinum support main on the NA server. My favourite champions include Sona, and Janna. Wanna play a game? Add me.</p>
+				</dd>
+				
+				<dt>Want to host an identical site to this one and/or thing I'm personally amazing?</dt>
+				<dd>
+					<p>Well thanks, I knew I was a cool cat but a complement like that coming from you really means a lot and I just want to acknowledge you are also amazing because you think I'm amazing. </p>
+					<a href="https://github.com/gnozell/Riot_API_Challenge_2/"> Click Here </a> to see this entire submission on GitHub.
+				</dd>
+				
+				<dt></dt>
+				<dd></dd>
+			</dl>
+			
+
+		</div>
+		
+		<footer> 
+    		<br>Yar Ha Har! isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends.
+    		<br> League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
+    	</footer>
+		</div>
+	</body>
+</html>

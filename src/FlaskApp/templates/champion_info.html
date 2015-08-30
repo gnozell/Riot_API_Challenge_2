@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<!-- 
+		Hey if you're looking at the page source maybe you would like to 
+		see the git repo: https://github.com/gnozell/Riot_API_Challenge_2
+
+		This is my entry to the Riot Games API Challenge 2. Yar Ha Har! is 
+		a website designed to show off summoners choices when playing the 
+		Black Market Brawlers game mode. 
+
+		More information about what Black Market Brawlers game mode was like
+		can be found here: http://leagueoflegends.wikia.com/wiki/Black_Market_Brawlers
+
+		favicon.ico from http://www.favicon.cc/?action=icon&file_id=753610 
+		video from riot games
+
+	-->
+	<head>
+    	<link rel='stylesheet' href='{{url_for('static', filename='css/style.css')}}'>
+    	<link rel="icon" type="image/ico" href="{{url_for('static', filename='img/favicon.ico')}}">
+    	<title>Yar Ha Har!</title>
+    	<meta name="author" content="Griffin Nozell">
+    	<meta name="keywords" content="League of Legends,API,League,of,Legends,LoL,Riot,Challenge,YarHaHar">
+    	<meta name="description" content="A submission to the League of Legends API Challenge 2">
+    	<meta charset="UTF-8">
+	</head>
+	<body>
+
+		<div class="fullscreen-bg">
+		    <video loop muted autoplay poster="{{ url_for('static', filename='img/missfortune_videoframe.jpg') }}" class="fullscreen-bg__video">
+		        <source src="{{ url_for('static', filename='video/missfortune_animated.mp4') }}" type="video/mp4">
+		    </video>
+		</div>
+		
+		<div class='mainarea'>
+		<header>
+			WANTED DEAD OR ALIVE
+    	</header>
+		
+		<nav>
+			 <a href="{{ url_for('index_page') }}">Most Wanted</a> |
+			 <a href="{{ url_for('champion_info_page') }}" class='selected'>Champion Information</a> |
+			 <a href="{{ url_for('brawlers_page') }}">Brawlers</a> |
+			 <a href="{{ url_for('black_market_page') }}">Black Market</a> |
+			 <a href="{{ url_for('about_page') }}">About</a>
+		</nav>
+		
+		<div class="divider">
+			<img src="{{url_for('static', filename='img/bilgewater_event/brochure-section-divider.png')}}" alt='Bilgewater Icon'>
+		</div>
+		
+		<div class='textarea'>
+			<p>Arrr here be a comprehensive list of every champion and their stats during the Bilgewater Event, to get specific champion stats click on their name.</p>
+			<table class='blacktable'>
+				<tr><th>Champion</th><th></th><th>Pick Rate</th><th>Win Rate</th><th>Ban Rate</th><th>Primary Roll</th></tr>
+				{% for champion in champion_list %}
+					<tr><td><a href="{{ url_for('champion_page', champion=champion[1]) }}">{{champion[0]}}</a></td><td><img src="{{ url_for('static', filename='img/champion/' + champion[1] + '.png') }}" alt='Ahri Icon'></td><td>{{champion[2]}}%</td><td>{{champion[3]}}%</td><td>{{champion[4]}}%</td><td>{{champion[5]}}</td></tr>
+				{% else %}
+					<tr><td><a href="{{ url_for('champion_page', champion='Ahri') }}">Error</a></td><td><img src="{{ url_for('static', filename='img/champion/Ahri.png') }}" alt='Ahri Icon'></td><td>10%</td><td>50%</td><td>12</td><td>Mage</td></tr>
+				{% endfor %}
+			</table>
+			
+			<br>
+
+		</div>
+		
+		<footer> 
+    		<br>Yar Ha Har! isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends.
+    		<br> League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
+    	</footer>
+		</div>
+	</body>
+</html>

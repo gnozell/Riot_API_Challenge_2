@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<!-- 
+		Hey if you're looking at the page source maybe you would like to 
+		see the git repo: https://github.com/gnozell/Riot_API_Challenge_2
+
+		This is my entry to the Riot Games API Challenge 2. Yar Ha Har! is 
+		a website designed to show off summoners choices when playing the 
+		Black Market Brawlers game mode. 
+
+		More information about what Black Market Brawlers game mode was like
+		can be found here: http://leagueoflegends.wikia.com/wiki/Black_Market_Brawlers
+
+		favicon.ico from http://www.favicon.cc/?action=icon&file_id=753610 
+		All other art assets from Riot Games
+
+	-->
+	<head>
+    	<link rel='stylesheet' href='{{url_for('static', filename='css/style.css')}}'>
+    	<link rel="icon" type="image/ico" href="{{url_for('static', filename='img/favicon.ico')}}">
+    	<title>Yar Ha Har!</title>
+    	<meta name="author" content="Griffin Nozell">
+    	<meta name="keywords" content="League of Legends,API,League,of,Legends,LoL,Riot,Challenge,YarHaHar">
+    	<meta name="description" content="A submission to the League of Legends API Challenge 2">
+    	<meta charset="UTF-8">
+	</head>
+	<body>
+
+		<div class="fullscreen-bg">
+			<img src="{{url_for('static', filename='img/splash/' + champion + '_0.jpg')}}" class="fullscreen-bg__img">
+		</div>
+		
+		<div class='mainarea'>
+		<header>
+			WANTED DEAD OR ALIVE
+    	</header>
+		
+		<nav>
+			 <a href="{{ url_for('index_page') }}">Most Wanted</a> |
+			 <a href="{{ url_for('champion_info_page') }}" class='selected'>Champion Information</a> |
+			 <a href="{{ url_for('brawlers_page') }}">Brawlers</a> |
+			 <a href="{{ url_for('black_market_page') }}">Black Market</a> |
+			 <a href="{{ url_for('about_page') }}">About</a>
+		</nav>
+		
+		<div class="divider">
+			<img src="{{url_for('static', filename='img/bilgewater_event/brochure-section-divider.png')}}" alt='Bilgewater Icon'>
+		</div>
+		
+		<div class='textarea'>
+			<div class="champ_info">
+				<img src="{{url_for('static', filename='img/loading/' + champion + '_0.jpg')}}" class="champion_portrait">
+				<div class="right_of_champ">
+					<h1>{{stats[0]}} - {{stats[1]}}</h1>
+					
+					<h2>Popular Items</h2>
+					
+					<img src="{{url_for('static', filename='img/item/' + items[0] + '.png')}}">
+					<img src="{{url_for('static', filename='img/item/' + items[1] + '.png')}}">
+					<img src="{{url_for('static', filename='img/item/' + items[2] + '.png')}}">
+					<img src="{{url_for('static', filename='img/item/' + items[3] + '.png')}}">
+					<img src="{{url_for('static', filename='img/item/' + items[4] + '.png')}}">
+					<img src="{{url_for('static', filename='img/item/' + items[5] + '.png')}}">
+					<img src="{{url_for('static', filename='img/item/' + items[6] + '.png')}}">
+					<img src="{{url_for('static', filename='img/item/' + items[7] + '.png')}}">
+					<img src="{{url_for('static', filename='img/item/' + items[8] + '.png')}}">
+					
+					<h2>Game Stats</h2>
+					
+					<table class='champion_table'>
+						<tr><th>Pick Rate</th><th>Win Rate</th><th>Ban Rate</th><th>Kills</th><th>Deaths</th><th>Assists</th><th>KDA Ratio</th><th>Primary Roll</th></tr>
+						<tr><td>{{stats[2]}}%</td><td>{{stats[3]}}%</td><td>{{stats[4]}}</td><td>{{stats[5]}}</td><td>{{stats[6]}}</td><td>{{stats[7]}}</td><td>{{stats[8]}}</td><td>{{stats[9]}}</td></tr>
+					</table>
+					
+					<table class='champion_table'>
+						<tr><th>Average Gold</th><th>Games Played</th><th>Minions Killed</th><th>Damage Dealt</th><th>Damage Taken</th></tr>
+						<tr><td>{{stats[10]}}</td><td>{{stats[11]}}</td><td>{{stats[12]}}</td><td>{{stats[13]}}</td><td>{{stats[14]}}</td></tr>
+					</table>
+					
+				</div>
+			
+			</div>
+		</div>
+		
+		<footer> 
+    		<br>Yar Ha Har! isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends.
+    		<br> League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
+    	</footer>
+		</div>
+	</body>
+</html>

@@ -1,5 +1,4 @@
 *.pyc
 *_info.json
 src/api.key
-src/FlaskApp/templates/*
 not_used/*
