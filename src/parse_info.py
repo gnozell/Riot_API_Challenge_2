@@ -277,13 +277,6 @@ def gen_database_info(rw):
 
 			insert_champion_db(p_champ, real_name, display_name, pick_rate=parcent, num_games=games_num, title=p_champ_title, avg_kills=kills,avg_deaths=deaths,avg_assists=assists, avg_kda=kda, avg_minion_score=avg_minion_score, avg_gold=avg_gold, win_rate=win_rate, avg_dmg_taken=avg_dmg_taken, avg_dmg_delt=avg_dmg_delt,position=position,ban_rate=ban_rate,fav_items=new_sorted)
 
-def print_items_info(rw):
-	item_list = static_get_item_list(rw)
-
-	for item in item_list['data']:
-		print "id: " + item
-		print "   name: " + item_list['data'][item]['name']
-
 def drop_db():
 	if os.path.isfile('FlaskApp/yarhahar.db'):
 		os.remove("FlaskApp/yarhahar.db")
@@ -436,65 +429,11 @@ def insert_champion_db(id=1, name=1, display_name=1, avg_kills=1, avg_deaths=1, 
 	# Just be sure any changes have been committed or they will be lost.
 	conn.close()
 
-def test_timeline(rw):
-	dir_location = "../info/BILGEWATER_DATASET/BILGEWATER"
-	files_dir = os.listdir(dir_location)
-	drop_db()
-	make_db()
-	
-	file_count = 0
-	merc_stats = {}
-	for file in files_dir:
-		if "NA_info.json" in file:
-			file_count += 1
-			with open(dir_location + "/" + file, 'r') as data_file:
-				count = 0
-				for line in data_file:
-					if count < 100:
-						clean_line = ""
-						if count == 0:
-							clean_line = line[1:len(line)-2]
-						elif count == 9999:
-							clean_line = line[:len(line)-1]
-						else:
-							clean_line = line[:len(line)-2]
-						count += 1
-
-						match = json.loads(clean_line)
-						
-						for frame in match['timeline']['frames']:
-							if "events" in frame.keys():
-								for event in frame['events']:
-									if "ITEM_PURCHASED" == event['eventType']:
-										if event['itemId'] in [3611,3612,3613,3614]:
-											if str(event['itemId']) in merc_stats:
-												new_games = merc_stats[str(event['itemId'])]['games'] + 1
-											
-												merc_stats[str(event['itemId'])].update({'games':new_games})
-											else:
-												merc_stats[str(event['itemId'])] = {'games':1}
-											
-											
-										if event['itemId'] in [3615,3616,3617,  3621,3622,3623,   3624,3625,3626]:
-											# Upgrades
-											#print "UPGRADE: " +  str(event['itemId']) + " " + str(event['participantId'])
-											pass
-					else:
-						pass
-					count += 1
-	for merc in merc_stats:
-		merc_dict = merc_stats[merc]
-		insert_merc_db(id=merc, games_played=merc_dict['games'])
-		
-
-
 def main():
 	api_key = get_file("api.key")
 
 	## init RiotWatcher
 	rw = RiotWatcher(api_key.strip())
-	#test_timeline(rw)
-	#test_timeline(rw)
 	gen_database_info(rw)
 
 	read_db()
