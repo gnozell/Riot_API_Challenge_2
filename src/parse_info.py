@@ -67,8 +67,8 @@ def gen_database_info(rw):
 	merc_stats = {}
 	file_count = 0
 	for file in files_dir:
-		#if "_info.json" in file:
-		if "NA_info.json" in file:
+		if "_info.json" in file:
+		#if "NA_info.json" in file:
 			file_count += 1
 			with open(dir_location + "/" + file, 'r') as data_file:
 				count = 0;
@@ -154,9 +154,7 @@ def gen_database_info(rw):
 
 							items = champions_stats[champion]['items']
 							for item in [participant['stats']['item0'],participant['stats']['item1'], participant['stats']['item2'],participant['stats']['item3'],participant['stats']['item4'],participant['stats']['item5'],participant['stats']['item6']]:
-								#if str(item) == "3165":
-								#	print "WE DID IT -------------------------------------------------------------------------"
-								
+							
 								if str(item) in items:
 									old_item_count = items[str(item)]
 									items[str(item)] = old_item_count + 1

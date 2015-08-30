@@ -9,7 +9,7 @@ By: Griffin Nozell (NA: DrSunshine)
 # Live URL
 ------
 
-[www.yarhahar.com](www.yarhahar.com)
+[www.yarhahar.com](http://www.yarhahar.com)
 
 Tested Browsers
 * Google Chrome
