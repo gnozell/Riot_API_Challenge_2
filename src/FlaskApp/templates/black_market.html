@@ -2,7 +2,7 @@
 <html lang="en-US">
 	<!-- 
 		Hey if you're looking at the page source maybe you would like to 
-		see the git repo: https://github.com/gnozell/Riot_API_Challenge_2
+		see the git repo: https://github.com/gnozell/Yar-Ha-Har/
 
 		This is my entry to the Riot Games API Challenge 2. Yar Ha Har! is 
 		a website designed to show off summoners choices when playing the 
@@ -10,24 +10,25 @@
 
 		More information about what Black Market Brawlers game mode was like
 		can be found here: http://leagueoflegends.wikia.com/wiki/Black_Market_Brawlers
+		
+		Video and Art Assets from Riot Games
 
-		favicon.ico from http://www.favicon.cc/?action=icon&file_id=753610 
-		video from riot games
-
+		BOYCOTT_ font from: http://www.1001freefonts.com/boycott.font
+		Open Sans font from: http://www.opensans.com/
 	-->
 	<head>
+		<meta charset="UTF-8">
     	<link rel='stylesheet' href='{{url_for('static', filename='css/style.css')}}'>
     	<link rel="icon" type="image/ico" href="{{url_for('static', filename='img/favicon.ico')}}">
     	<title>Yar Ha Har!</title>
     	<meta name="author" content="Griffin Nozell">
     	<meta name="keywords" content="League of Legends,API,League,of,Legends,LoL,Riot,Challenge,YarHaHar">
     	<meta name="description" content="A submission to the League of Legends API Challenge 2">
-    	<meta charset="UTF-8">
 	</head>
 	<body>
 
 		<div class="fullscreen-bg">
-			<img src="{{url_for('static', filename='img/quinn_garen_aatrox_videoframe.jpg')}}" class="fullscreen-bg__img">
+			<img src="{{url_for('static', filename='img/quinn_garen_aatrox_videoframe.jpg')}}" class="fullscreen-bg__img" alt="quin_garen_aatrox_background">
 		</div>
 		
 		<div class='mainarea'>
@@ -49,8 +50,8 @@
 		
 		<div class='textarea'>
 			<h1>Psst.. Hey you! Wants some items?</h1>
-			<p>Black Market Brawlers introduced tons of new items, many provided unique attributes not found in League before.</p>
-			<p>These stats are derived from the matchIDs provided by Riot Games for the League of Legends API Challenge 2. These are items that champions possessed when their games ended and their associated win rates.</p>
+			<p>Black Market Brawlers introduced tons of new items, many of which provided unique attributes previously not found in the game.</p>
+			<p>Stats are derived from the matchIDs provided by Riot Games for the League of Legends API Challenge 2. These are the items that champions possessed along with the associated item’s win rates when their games ended.</p>
 			<table class='blacktable'>
 				<tr><th>Item</th><th>Icon</th><th>Buy Rate</th><th>Win Rate</th></tr>
 				

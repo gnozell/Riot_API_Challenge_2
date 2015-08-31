@@ -2,7 +2,7 @@
 <html lang="en-US">
 	<!-- 
 		Hey if you're looking at the page source maybe you would like to 
-		see the git repo: https://github.com/gnozell/Riot_API_Challenge_2
+		see the git repo: https://github.com/gnozell/Yar-Ha-Har/
 
 		This is my entry to the Riot Games API Challenge 2. Yar Ha Har! is 
 		a website designed to show off summoners choices when playing the 
@@ -10,19 +10,20 @@
 
 		More information about what Black Market Brawlers game mode was like
 		can be found here: http://leagueoflegends.wikia.com/wiki/Black_Market_Brawlers
+		
+		Video and Art Assets from Riot Games
 
-		favicon.ico from http://www.favicon.cc/?action=icon&file_id=753610 
-		video from riot games
-
+		BOYCOTT_ font from: http://www.1001freefonts.com/boycott.font
+		Open Sans font from: http://www.opensans.com/
 	-->
 	<head>
+		<meta charset="UTF-8">
     	<link rel='stylesheet' href='{{url_for('static', filename='css/style.css')}}'>
     	<link rel="icon" type="image/ico" href="{{url_for('static', filename='img/favicon.ico')}}">
     	<title>Yar Ha Har!</title>
     	<meta name="author" content="Griffin Nozell">
     	<meta name="keywords" content="League of Legends,API,League,of,Legends,LoL,Riot,Challenge,YarHaHar">
     	<meta name="description" content="A submission to the League of Legends API Challenge 2">
-    	<meta charset="UTF-8">
 	</head>
 	<body>
 
@@ -53,7 +54,7 @@
 			<div class="merc">
 				<img src='{{url_for("static", filename="img/bilgewater_event/merc-ironbacks.png")}}' alt='ironbacks Icon'>
 				<h2>IronBacks</h2>
-				<p>Ironbacks are melee tank siege minions. Their ability upgrades grant a shield, reduce damage from minions, or reduce damage from structures.</p>
+				<p>Ironbacks are melee tank siege minions. Their ability upgrades can grant a shield, reduce damage from minions, or reduce damage from structures.</p>
 				<div class="merctable">
 					<table class="blacktable">
 						<tr><th>Win Rate</th><th>Buy Rate</th><th>Games Played</th></tr>
@@ -68,7 +69,7 @@
 			<div class="merc">
 				<img src='{{url_for("static", filename="img/bilgewater_event/merc-ocklepods.png")}}' alt='ocklepods Icon'>
 				<h2>OcklePods</h2>
-				<p>Ocklepods are ranged support utility minions. Their abilities upgrade to grant shields to allied minions, peer into the nearby jungle with clairvoyance effects, and protect from ganks.</p>
+				<p>Ocklepods are ranged support utility minions. Their ability upgrades can grant shields to allied minions, peer into the nearby jungle with clairvoyance effects, and protect from ganks.</p>
 				<div class="merctable">
 					<table class="blacktable">
 						<tr><th>Win Rate</th><th>Buy Rate</th><th>Games Played</th></tr>
@@ -83,7 +84,7 @@
 			<div class="merc">
 				<img src='{{url_for("static", filename="img/bilgewater_event/merc-plundercrabs.png")}}' alt='plundercrabs Icon'>
 				<h2>PlunderCrabs</h2>
-				<p>Plundercrabs are ranged champion harass minions. Their ability upgrades increase zone control, raise attack speed, and eventually damages all enemy champs within the zone range.</p>
+				<p>Plundercrabs are ranged champion harass minions. Their ability upgrades can increase zone control, raise attack speed, and eventually damage all enemy champions within the zone range.</p>
 			<div class="merctable">
 					<table class="blacktable">
 						<tr><th>Win Rate</th><th>Buy Rate</th><th>Games Played</th></tr>
@@ -98,7 +99,7 @@
 			<div class="merc">
 				<img src='{{url_for("static", filename="img/bilgewater_event/merc-razorfins.png")}}' alt='razorfins Icon'>
 				<h2>Razorfins</h2>
-				<p>Razorfins are melee minions that pursue champions. Their ability upgrades help razorfins chase down enemy champions, deal true damage and eventually swarm the enemy with superior numbers.</p>
+				<p>Razorfins are melee minions that pursue champions. Their ability upgrades can help chase down enemy champions, deal true damage, and eventually swarm the enemy with superior numbers.</p>
 				<div class="merctable">
 					<table class="blacktable">
 						<tr><th>Win Rate</th><th>Buy Rate</th><th>Games Played</th></tr>

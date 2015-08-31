@@ -2,7 +2,7 @@
 <html lang="en-US">
 	<!-- 
 		Hey if you're looking at the page source maybe you would like to 
-		see the git repo: https://github.com/gnozell/Riot_API_Challenge_2
+		see the git repo: https://github.com/gnozell/Yar-Ha-Har/
 
 		This is my entry to the Riot Games API Challenge 2. Yar Ha Har! is 
 		a website designed to show off summoners choices when playing the 
@@ -10,24 +10,25 @@
 
 		More information about what Black Market Brawlers game mode was like
 		can be found here: http://leagueoflegends.wikia.com/wiki/Black_Market_Brawlers
+		
+		Video and Art Assets from Riot Games
 
-		favicon.ico from http://www.favicon.cc/?action=icon&file_id=753610 
-		All other art assets from Riot Games
-
+		BOYCOTT_ font from: http://www.1001freefonts.com/boycott.font
+		Open Sans font from: http://www.opensans.com/
 	-->
 	<head>
+		<meta charset="UTF-8">
     	<link rel='stylesheet' href='{{url_for('static', filename='css/style.css')}}'>
     	<link rel="icon" type="image/ico" href="{{url_for('static', filename='img/favicon.ico')}}">
     	<title>Yar Ha Har!</title>
     	<meta name="author" content="Griffin Nozell">
     	<meta name="keywords" content="League of Legends,API,League,of,Legends,LoL,Riot,Challenge,YarHaHar">
     	<meta name="description" content="A submission to the League of Legends API Challenge 2">
-    	<meta charset="UTF-8">
 	</head>
 	<body>
 
 		<div class="fullscreen-bg">
-			<img src="{{url_for('static', filename='img/splash/' + champion + '_0.jpg')}}" class="fullscreen-bg__img">
+			<img src="{{url_for('static', filename='img/splash/' + champion + '_0.jpg')}}" class="fullscreen-bg__img" alt="{{champion}}_background">
 		</div>
 		
 		<div class='mainarea'>
@@ -49,21 +50,21 @@
 		
 		<div class='textarea'>
 			<div class="champ_info">
-				<img src="{{url_for('static', filename='img/loading/' + champion + '_0.jpg')}}" class="champion_portrait">
+				<img src="{{url_for('static', filename='img/loading/' + champion + '_0.jpg')}}" class="champion_portrait" alt="{{champion}}_portrait">
 				<div class="right_of_champ">
 					<h1>{{stats[0]}} - {{stats[1]}}</h1>
 					
 					<h2>Popular Items</h2>
 					
-					<img src="{{url_for('static', filename='img/item/' + items[0] + '.png')}}">
-					<img src="{{url_for('static', filename='img/item/' + items[1] + '.png')}}">
-					<img src="{{url_for('static', filename='img/item/' + items[2] + '.png')}}">
-					<img src="{{url_for('static', filename='img/item/' + items[3] + '.png')}}">
-					<img src="{{url_for('static', filename='img/item/' + items[4] + '.png')}}">
-					<img src="{{url_for('static', filename='img/item/' + items[5] + '.png')}}">
-					<img src="{{url_for('static', filename='img/item/' + items[6] + '.png')}}">
-					<img src="{{url_for('static', filename='img/item/' + items[7] + '.png')}}">
-					<img src="{{url_for('static', filename='img/item/' + items[8] + '.png')}}">
+					<img src="{{url_for('static', filename='img/item/' + items[0] + '.png')}}" alt="item_{items[0]}">
+					<img src="{{url_for('static', filename='img/item/' + items[1] + '.png')}}" alt="item_{items[1]}">
+					<img src="{{url_for('static', filename='img/item/' + items[2] + '.png')}}" alt="item_{items[2]}">
+					<img src="{{url_for('static', filename='img/item/' + items[3] + '.png')}}" alt="item_{items[3]}">
+					<img src="{{url_for('static', filename='img/item/' + items[4] + '.png')}}" alt="item_{items[4]}">
+					<img src="{{url_for('static', filename='img/item/' + items[5] + '.png')}}" alt="item_{items[5]}">
+					<img src="{{url_for('static', filename='img/item/' + items[6] + '.png')}}" alt="item_{items[6]}">
+					<img src="{{url_for('static', filename='img/item/' + items[7] + '.png')}}" alt="item_{items[7]}">
+					<img src="{{url_for('static', filename='img/item/' + items[8] + '.png')}}" alt="item_{items[8]}">
 					
 					<h2>Game Stats</h2>
 					

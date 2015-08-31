@@ -2,7 +2,7 @@
 <html lang="en-US">
 	<!-- 
 		Hey if you're looking at the page source maybe you would like to 
-		see the git repo: https://github.com/gnozell/Riot_API_Challenge_2
+		see the git repo: https://github.com/gnozell/Yar-Ha-Har/
 
 		This is my entry to the Riot Games API Challenge 2. Yar Ha Har! is 
 		a website designed to show off summoners choices when playing the 
@@ -10,22 +10,20 @@
 
 		More information about what Black Market Brawlers game mode was like
 		can be found here: http://leagueoflegends.wikia.com/wiki/Black_Market_Brawlers
-
 		
 		Video and Art Assets from Riot Games
 
 		BOYCOTT_ font from: http://www.1001freefonts.com/boycott.font
 		Open Sans font from: http://www.opensans.com/
-
 	-->
 	<head>
+		<meta charset="UTF-8">
     	<link rel='stylesheet' href='{{url_for('static', filename='css/style.css')}}'>
     	<link rel="icon" type="image/ico" href="{{url_for('static', filename='img/favicon.ico')}}">
     	<title>Yar Ha Har!</title>
     	<meta name="author" content="Griffin Nozell">
     	<meta name="keywords" content="League of Legends,API,League,of,Legends,LoL,Riot,Challenge,YarHaHar">
     	<meta name="description" content="A submission to the League of Legends API Challenge 2">
-    	<meta charset="UTF-8">
 	</head>
 	<body>
 
@@ -55,35 +53,31 @@
 		<div class='textarea'>
 			<div class="wantedtable">
 				<dl>
-					<dt>Gangplank lives in RU and OCE</dt>
+					<dt>No one loves Morello(nomicon)</dt>
 					<dd>
-						<img src="{{ url_for('static', filename='img/champion/Gangplank.png') }}" alt='Gangplank Icon'>
-						<p>In all other regions expect for RU and OCE gangplank had a 0% play rate.
-						This is probably because of him being disabled for the start of the event.
-						For RU gangplank also had the highest pick rate for the region at 29.7%.</p>
-					</dd>
-					
-					<dt>Every one hates Katarina</dt>
-					<dd>
-						<img src="{{ url_for('static', filename='img/champion/Katarina.png') }}" alt='Katarina Icon'>
-						<p>Katarina was the most banned champion in 8 of the 10 regions, TR seems to have
-						hated her the most with a 82.1% ban rate.</p>
+						<img src="{{ url_for('static', filename='img/item/3165.png') }}" alt='Katarina Icon'>
+						<p>With 10,000 games surveyed in each of the 10 regions, it was discovered that the Morellonomicon item was never bought.</p>
 					</dd>
 					
 					<dt>The best items never bought</dt>
 					<dd>
 						<img src="{{ url_for('static', filename='img/item/1341.png') }}" alt='Katarina Icon'>
-						<p>Players seemed oblivious to the new teleport boots enchantment as only RU and OCE players build these enchantments.
-						With around 60% winrates for these enchantments it seems the other regions missed out.</p>
+						<p>Players seemed oblivious to the new teleport boots enchantment as only RU and OCE players built those enchantments. With around 60% win rates for the enchantments it seems the other regions may have missed out.</p>
 					</dd>
-					
-					<dt>No one loves Morello(nomicon)</dt>
+				
+					<dt>Gangplank lives in RU and OCE</dt>
 					<dd>
-						<img src="{{ url_for('static', filename='img/item/3165.png') }}" alt='Katarina Icon'>
-						<p>Out of all the 10 regions with 10,000 games each Morellonomicon was never bought.</p>
+						<img src="{{ url_for('static', filename='img/champion/Gangplank.png') }}" alt='Gangplank Icon'>
+						<p>In all regions except for RU and OCE, the champion: Gangplank had a 0% pick rate. This is most probably due to him being disabled at the start of the event. In the RU region, Gangplank had the highest pick rate at 29.7%.</p>
 					</dd>
 					
-				</dt>
+					<dt>Every one hates Katarina</dt>
+					<dd>
+						<img src="{{ url_for('static', filename='img/champion/Katarina.png') }}" alt='Katarina Icon'>
+						<p>Katarina was the most banned champion in 8 of the 10 regions. TR seems to have hated her the most with an 82.1% ban rate.</p>
+					</dd>
+					
+				</dl>
 			</div>
 		</div>
 		

@@ -1,8 +1,8 @@
 # Yar Ha Har! - League of Legends API Challenge 2
 ------
-Avast land lubber, Here be my entry to the League of Legends API Challenge 2: Bilgewater category!
+Avast land lubber, here be my entry to the League of Legends API Challenge 2: Bilgewater category!
 
-My submission is a python application that first gathers all matches from the list provided by Riot Games and then parses the information to generate a SQL database that is used when serving up templates of html files in a Flask web server.
+My submission is a python application that gathers all matches from the list provided by Riot Games and then parses the information to generate an SQL database that is used when serving templates of html files in a Flask web server.
 
 By: Griffin Nozell (NA: DrSunshine)
 
@@ -30,7 +30,7 @@ More details can be found in the "About" page
 
 Done! You can test it by going to a web browser and going to http://localhost
 
-This will use the provided yarhahar.db databse file found in src/FlaskApp/ 
+This will use the provided yarhahar.db database file found in src/FlaskApp/ 
 
 # Remake the yarhahar.db 
 ------
