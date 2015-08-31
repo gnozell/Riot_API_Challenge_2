@@ -86,9 +86,11 @@
 	padding-left:50px;
 	padding-top:20px;
 	padding-bottom:20px;
+	padding-right:20px;
 	border-radius: 25px;
-	background: linear-gradient(to right, rgba(30, 30, 30, 0.7), rgba(0,0,0,0));
+	background: linear-gradient(to right, rgba(30, 30, 30, 0.7), rgba(30, 30, 30, 0.7));
 	background-repeat:no-repeat;
+	color:white;
 	margin:5px;
 	
 }
