@@ -18,6 +18,8 @@ def get_file(file):
 	return keyfile.read()
 
 def static_get_champion_list(rw):
+	# attempts 5 times to get the static infomation
+	# about champions from the api 
 	tries = 5
 	while tries != 0:
 		try:
@@ -36,6 +38,8 @@ def static_get_champion_list(rw):
 				tries -= 1
 
 def static_get_item_list(rw):
+	# attempts 5 times to get the static infomation
+	# about items from the api 
 	tries = 5
 	while tries != 0:
 		try:
@@ -54,24 +58,34 @@ def static_get_item_list(rw):
 				tries -= 1
 
 def gen_database_info(rw):
+	# This is the meat of the program
+	# parses the information in dir_location and then
+	# loads it up into the yarhahar.db file
+	
+	# gets static info
 	champ_list =  static_get_champion_list(rw)
 	item_list =  static_get_item_list(rw)
 
 	dir_location = "../info/BILGEWATER_DATASET/BILGEWATER"
 	files_dir = os.listdir(dir_location)
 
-	
+	# fill these up for later to insert into db
 	champions = {}
 	champions_stats = {}
 	item_info = {}
 	merc_stats = {}
 	file_count = 0
+	
+	# for files in location with _info.db ending
 	for file in files_dir:
 		if "_info.json" in file:
-		#if "NA_info.json" in file:
 			file_count += 1
+			
+			# because the files are so large it needs to be loaded in one line at a time
 			with open(dir_location + "/" + file, 'r') as data_file:
 				count = 0;
+				
+				# parses the line getting rid of trailing white space and commas and brackets
 				for line in data_file:
 					clean_line = ""
 					if count == 0:
@@ -82,12 +96,18 @@ def gen_database_info(rw):
 						clean_line = line[:len(line)-2]
 					count += 1
 					
+					# displays progress to the screen
 					if count%500 == 0:
 						print file + ": " + str(count)
 
+					# loads the string into a json object
 					match = json.loads(clean_line)
+					
+					# used in parsing the timeline
 					person_to_merc = {}
 					
+					# parses the time line looking for 
+					# the item purchases of the mercs and their upgrades
 					for frame in match['timeline']['frames']:
 							if "events" in frame.keys():
 								for event in frame['events']:
@@ -109,6 +129,8 @@ def gen_database_info(rw):
 											merc_id = str(person_to_merc[str(event['participantId']-1)])
 											new_stat = merc_stats[merc_id][str(event['itemId'])] + 1
 											merc_stats[merc_id].update({str(event['itemId']):new_stat})
+					
+					# gets the bans for the game played
 					for team in match['teams']:
 						if "bans" in team:
 							for bans in team['bans']:
@@ -119,6 +141,8 @@ def gen_database_info(rw):
 								else:
 									champions_stats[champion] = {"kills":0,"deaths":0,"assists":0,"minionsKilled":0,"goldEarned":0, "games_won":0,"totalDamageDealt":0,"totalDamageTaken":0,"bans":1,"items":{}}
 
+					# gets the information for the champion played
+					# and stats for that game like score / deaths / kills / gold
 					for participant in match['participants']:
 						champion = str(participant['championId'])
 						if champion in champions:
@@ -191,9 +215,16 @@ def gen_database_info(rw):
 							if participant['stats']['winner']:
 								games_won += 1
 							champions_stats[champion] = {"kills":kills,"deaths":deaths,"assists":assists,"minionsKilled":minions,"goldEarned":gold, "games_won":games_won,"totalDamageDealt":totalDamageDealt,"totalDamageTaken":totalDamageTaken,"bans":0,"items":{}}
+	
+	# done collecting the information and is now ready to load it into the DB
+	# first drops the old file
 	drop_db()
+	
+	# then makes a new one fresh and empty
 	make_db()
 
+	# loops through the objects that where earlier loaded up
+	# and loads then into the yarhahar.db
 	for item in item_list['data']:
 		b_rate = 0
 		w_rate = 0
@@ -275,7 +306,8 @@ def gen_database_info(rw):
 
 			insert_champion_db(p_champ, real_name, display_name, pick_rate=parcent, num_games=games_num, title=p_champ_title, avg_kills=kills,avg_deaths=deaths,avg_assists=assists, avg_kda=kda, avg_minion_score=avg_minion_score, avg_gold=avg_gold, win_rate=win_rate, avg_dmg_taken=avg_dmg_taken, avg_dmg_delt=avg_dmg_delt,position=position,ban_rate=ban_rate,fav_items=new_sorted)
 
-def drop_db():
+def drop_db(): 
+	# gets rid of the old yarhahar.db file
 	if os.path.isfile('FlaskApp/yarhahar.db'):
 		os.remove("FlaskApp/yarhahar.db")
 
@@ -283,7 +315,7 @@ def make_db():
 	conn = sqlite3.connect('FlaskApp/yarhahar.db')
 	c = conn.cursor()
 
-	# Create table
+	# Create tables
 
 	c.execute('''CREATE TABLE `merc` (
 		  `id` INTEGER NULL DEFAULT NULL,
@@ -350,6 +382,7 @@ def make_db():
 	conn.close()
 
 def read_db():
+	# used for testing and debugging, it reads a call from the db
 	conn = sqlite3.connect('FlaskApp/yarhahar.db')
 	c = conn.cursor()
 	for row in c.execute('SELECT * FROM merc'):
@@ -360,6 +393,8 @@ def insert_merc_db(id=1, display_name=1, buy_rate=1, win_rate=1, games_played=1,
 	conn = sqlite3.connect('FlaskApp/yarhahar.db')
 	params = (id, display_name, buy_rate, win_rate, games_played, ability_rank, defense_rank, offense_rank)
 	c = conn.cursor()
+	
+	# the call to insert into the merc db
 
 	call = '''INSERT INTO `merc` (`id`,`display_name`,`buy_rate`,`win_rate`,`games_played`,`ability_rank`,`defense_rank`,`offense_rank`) VALUES
 					(?,?,?,?,?,?,?,?)
@@ -379,6 +414,7 @@ def insert_item_db(id=1, display_name=1, buy_rate=1, win_rate=1, num_games=1):
 	params = (id, display_name, buy_rate, win_rate, num_games )
 	c = conn.cursor()
 
+	# the call to insert into the item db
 	call = '''INSERT INTO `items` (`id`,`display_name`,`buy_rate`,`win_rate`,`num_games`) VALUES
 					(?,?,?,?,?)
 					'''
@@ -404,6 +440,7 @@ def insert_champion_db(id=1, name=1, display_name=1, avg_kills=1, avg_deaths=1, 
 	fav_item7 = fav_items[7]
 	fav_item8 = fav_items[8]
 
+	# params and the call to insert into the champion db
 	params = (id, name, display_name, avg_kills, avg_deaths, avg_assists, 
 		avg_kda, avg_minion_score, avg_dmg_delt, avg_dmg_taken, avg_kraken,
 		 avg_gold, pick_rate, ban_rate, position, num_games, fav_merc, win_rate, title,
@@ -428,13 +465,14 @@ def insert_champion_db(id=1, name=1, display_name=1, avg_kills=1, avg_deaths=1, 
 	conn.close()
 
 def main():
+	# main function that runs the program
 	api_key = get_file("api.key")
 
 	## init RiotWatcher
 	rw = RiotWatcher(api_key.strip())
 	gen_database_info(rw)
 
-	read_db()
+	#read_db()
 
 if __name__ == "__main__":
 	# If this is ran file then use function main

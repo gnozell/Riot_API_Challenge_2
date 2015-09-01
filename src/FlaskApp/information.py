@@ -1,5 +1,8 @@
 import sqlite3
 
+# This class is just a wrapper for getting the information out
+# of the yarhahar.db and returning it
+
 class static_lol:
 	def __init__(self):
 		self.champion_list = self.gen_champ_list()

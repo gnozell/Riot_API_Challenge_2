@@ -2,6 +2,7 @@ from flask import Flask, send_from_directory, render_template
 from information import static_lol
 import os
 
+# collects the information from yarhahar.db at the start
 info = static_lol()
 champion_list = info.get_champion_list()
 champ_names = info.get_champion_names()
@@ -12,8 +13,10 @@ ocklepods_stats = info.get_merc_info("ocklepods")
 plundercrabs_stats = info.get_merc_info("plundercrabs")
 razorfins_stats = info.get_merc_info("razorfins")
 
+# flask settings
 app = Flask(__name__, static_folder='static/', static_url_path='')
 
+# home page
 @app.route("/")
 def index_page():
     return render_template('index.html')
@@ -36,6 +39,8 @@ def champion_info_page():
 
 @app.route("/champion/<champion>")
 def champion_page(champion=None):
+	# gets the champion at the end of the url and 
+	# then retrieves the champions stats from the yarhahar.db
     if str(champion) in champ_names:
       stats = info.get_specific_champ(champion)[0]
       pre_items = info.get_specific_champ_items(champion)[0]
@@ -46,6 +51,7 @@ def champion_page(champion=None):
     else:
       return render_template('404.html'), 404
 	  
+# error pages hopefully no one sees these
 @app.errorhandler(404)
 def page_not_found(e):
 	return render_template('404.html'), 404
