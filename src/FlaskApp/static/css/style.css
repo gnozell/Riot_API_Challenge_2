@@ -113,7 +113,9 @@
 .wantedtable dl dd p{
 	padding-left:110px;
 }
-
+.wantedtable dl dd{
+	padding-bottom:100px;
+}
 .blacktable{
 	width:100%;
 	border-spacing: 0px;
